@@ -204,7 +204,7 @@ const EXAMS = {
    que ese defecto puntual de rotulado ya no aplica visualmente, pero el contenido es fiel al original en todo lo demás. */
 
 /* ============ ESTADO ============ */
-let STATE = { view:"landing", comision:null, docente:false, answers:{} };
+let STATE = { view:"landing", comision:null, docente:false, answers:{}, restored:false };
 let ENABLED = {5:false,6:false,7:false,8:false,9:false,10:false}; // default: todo deshabilitado hasta que el docente lo active
 
 async function tryLoadSharedConfig(){
@@ -352,12 +352,24 @@ function renderExamIntro(){
     el("div", {class:"field"}, [ el("label",{},[txt("Número de alumno")]), el("input",{type:"text", id:"numero"}) ]),
     el("button", {class:"primary"}, [txt("Comenzar")])
   ]);
-  card.querySelector("button").onclick = () => {
+  card.querySelector("button").onclick = async () => {
     const nombre = card.querySelector("#nombre").value.trim();
     const numero = card.querySelector("#numero").value.trim();
     if (!nombre || !numero) { alert("Completá nombre y número de alumno."); return; }
+    if (CONFIG.APPS_SCRIPT_URL) {
+      try {
+        const resp = await fetch(CONFIG.APPS_SCRIPT_URL + "?action=checkNumero&comision=" + encodeURIComponent(STATE.comision) + "&numero=" + encodeURIComponent(numero));
+        const data = await resp.json();
+        if (data && data.yaEnvio) {
+          alert("El número de alumno " + numero + " ya tiene una entrega registrada para esta comisión. Si creés que es un error, avisale a tu docente.");
+          return;
+        }
+      } catch(e) { console.warn("No se pudo verificar entregas previas:", e); }
+    }
     STATE.answers = { _nombre: nombre, _numero: numero };
+    STATE.restored = false;
     STATE.view = "exam_form";
+    saveDraftToLocal();
     render();
   };
   app.appendChild(card);
@@ -367,6 +379,10 @@ function renderExamForm(){
   const exam = EXAMS[STATE.comision];
   app.appendChild(el("h1", {}, [txt("Comisión " + STATE.comision + " — Pruebita Práctico Purificación")]));
   app.appendChild(el("div", {class:"sub"}, [txt(STATE.answers._nombre + " · N° " + STATE.answers._numero)]));
+
+  if (STATE.restored) {
+    app.appendChild(el("div", {class:"notice ok"}, [txt("Recuperamos las respuestas que habías completado antes de que se cerrara la página o se cortara la conexión. Revisalas y seguí donde quedaste.")]));
+  }
 
   const form = el("div", {class:"card"});
   exam.sections.forEach(sec => {
@@ -378,16 +394,20 @@ function renderExamForm(){
         const radioBlock = el("div", {style:"margin-bottom:12px;"});
         if (f.label) radioBlock.appendChild(el("div", {style:"margin-bottom:4px;"}, [txt(f.label)]));
         (f.options||[]).forEach((opt) => {
-          radioBlock.appendChild(el("label", {class:"opt"}, [
-            el("input", {type:"radio", name:f.id, value:opt}),
-            txt(opt)
-          ]));
+          const radioAttrs = {type:"radio", name:f.id, value:opt};
+          if (STATE.answers[f.id] === opt) radioAttrs.checked = "checked";
+          const radioInput = el("input", radioAttrs);
+          radioInput.onchange = () => { STATE.answers[f.id] = opt; saveDraftToLocal(); };
+          radioBlock.appendChild(el("label", {class:"opt"}, [radioInput, txt(opt)]));
         });
         secDiv.appendChild(radioBlock);
       } else {
         const fieldDiv = el("div", {class:"field"});
         fieldDiv.appendChild(el("label", {}, [txt(f.label)]));
-        fieldDiv.appendChild(el(f.type === "textarea" ? "textarea" : "input", {type:"text", "data-id":f.id}));
+        const inputEl = el(f.type === "textarea" ? "textarea" : "input", {type:"text", "data-id":f.id});
+        if (STATE.answers[f.id]) inputEl.value = STATE.answers[f.id];
+        inputEl.addEventListener("input", () => { STATE.answers[f.id] = inputEl.value; saveDraftToLocal(); });
+        fieldDiv.appendChild(inputEl);
         secDiv.appendChild(fieldDiv);
       }
     });
@@ -419,13 +439,19 @@ function collectAnswers(formEl, exam){
 async function submitExam(formEl, exam){
   const answers = collectAnswers(formEl, exam);
   let sentToBackend = false;
+  let duplicado = false;
   if (CONFIG.APPS_SCRIPT_URL) {
     try {
-      await fetch(CONFIG.APPS_SCRIPT_URL, {
+      const resp = await fetch(CONFIG.APPS_SCRIPT_URL, {
         method:"POST", headers:{"Content-Type":"text/plain"},
         body: JSON.stringify({ action:"submitResponse", data: answers })
       });
-      sentToBackend = true;
+      const json = await resp.json().catch(() => null);
+      if (json && json.error === "duplicado") {
+        duplicado = true;
+      } else {
+        sentToBackend = true;
+      }
     } catch(e) { console.warn("No se pudo enviar al backend:", e); }
   }
   // Copia de resguardo oculta (no descargable por el alumno). Solo funciona si la página corre
@@ -436,14 +462,27 @@ async function submitExam(formEl, exam){
   }
   STATE.lastAnswers = answers;
   STATE.lastSentToBackend = sentToBackend;
+  STATE.lastDuplicado = duplicado;
   STATE.lastFormEl = formEl;
   STATE.lastExam = exam;
+  if (sentToBackend || duplicado) {
+    // Ya quedó guardada en el Sheet (o ya estaba guardada de antes): el borrador local no hace más falta.
+    clearDraftFromLocal();
+  }
   STATE.view = "exam_done";
   render();
 }
 
 function renderExamDone(){
-  if (STATE.lastSentToBackend || (!CONFIG.APPS_SCRIPT_URL && window.storage)) {
+  if (STATE.lastDuplicado) {
+    app.appendChild(el("div", {class:"card"}, [
+      el("h2", {}, [txt("Ya habías entregado esta pruebita")]),
+      el("div", {class:"notice warn"}, [txt("El número de alumno " + STATE.answers._numero + " ya tiene una entrega registrada para esta comisión, así que no se guardó una segunda respuesta. Si pensás que es un error, avisale a tu docente.")])
+    ]));
+    const backBtn = el("button", {class:"ghost"}, [txt("Volver al inicio")]);
+    backBtn.onclick = () => { STATE.view="landing"; STATE.comision=null; render(); };
+    app.appendChild(backBtn);
+  } else if (STATE.lastSentToBackend || (!CONFIG.APPS_SCRIPT_URL && window.storage)) {
     app.appendChild(el("div", {class:"card"}, [
       el("h2", {}, [txt("¡Listo!")]),
       el("div", {class:"sub"}, [txt("Tu respuesta fue registrada. Ya podés cerrar esta página.")])
@@ -454,7 +493,7 @@ function renderExamDone(){
   } else {
     const card = el("div", {class:"card"}, [
       el("h2", {}, [txt("No se pudo guardar tu respuesta")]),
-      el("div", {class:"notice warn"}, [txt("La plataforma todavía no está conectada a la planilla del docente, o hubo un problema de conexión. No cierres esta página: avisale a tu docente y probá de nuevo.")])
+      el("div", {class:"notice warn"}, [txt("La plataforma todavía no está conectada a la planilla del docente, o hubo un problema de conexión. Tus respuestas quedaron guardadas en este dispositivo: si cerrás la página podés retomarlas al volver a entrar. Avisale a tu docente y probá de nuevo.")])
     ]);
     const retryBtn = el("button", {class:"primary"}, [txt("Reintentar envío")]);
     retryBtn.onclick = () => submitExam(STATE.lastFormEl, STATE.lastExam);
@@ -463,7 +502,35 @@ function renderExamDone(){
   }
 }
 
-tryLoadSharedConfig().then(render);
+const DRAFT_KEY = "pruebita_draft_v1";
+function saveDraftToLocal(){
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({ comision: STATE.comision, answers: STATE.answers, ts: Date.now() }));
+  } catch(e) { /* localStorage no disponible (modo privado, etc.): no se puede resguardar el borrador */ }
+}
+function loadDraftFromLocal(){
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e) { return null; }
+}
+function clearDraftFromLocal(){
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
+}
+
+function init(){
+  const draft = loadDraftFromLocal();
+  if (draft && draft.comision && EXAMS[draft.comision] && draft.answers && draft.answers._numero) {
+    STATE.comision = draft.comision;
+    STATE.answers = draft.answers;
+    STATE.view = "exam_form";
+    STATE.restored = true;
+  }
+  render();
+}
+
+tryLoadSharedConfig().then(init);
 </script>
 </body>
 </html>
