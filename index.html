@@ -349,19 +349,19 @@ function renderExamIntro(){
     el("h2", {}, [txt("Comisión " + STATE.comision + " — Pruebita Práctico Purificación")]),
     el("div", {class:"sub"}, [txt("Total: 10 puntos — 5 ejercicios de 2 puntos cada uno.")]),
     el("div", {class:"field"}, [ el("label",{},[txt("Nombre y apellido")]), el("input",{type:"text", id:"nombre"}) ]),
-    el("div", {class:"field"}, [ el("label",{},[txt("Número de alumno")]), el("input",{type:"text", id:"numero"}) ]),
+    el("div", {class:"field"}, [ el("label",{},[txt("DNI")]), el("input",{type:"text", id:"numero"}) ]),
     el("button", {class:"primary"}, [txt("Comenzar")])
   ]);
   card.querySelector("button").onclick = async () => {
     const nombre = card.querySelector("#nombre").value.trim();
     const numero = card.querySelector("#numero").value.trim();
-    if (!nombre || !numero) { alert("Completá nombre y número de alumno."); return; }
+    if (!nombre || !numero) { alert("Completá nombre y DNI."); return; }
     if (CONFIG.APPS_SCRIPT_URL) {
       try {
         const resp = await fetch(CONFIG.APPS_SCRIPT_URL + "?action=checkNumero&comision=" + encodeURIComponent(STATE.comision) + "&numero=" + encodeURIComponent(numero));
         const data = await resp.json();
         if (data && data.yaEnvio) {
-          alert("El número de alumno " + numero + " ya tiene una entrega registrada para esta comisión. Si creés que es un error, avisale a tu docente.");
+          alert("El DNI " + numero + " ya tiene una entrega registrada para esta comisión. Si creés que es un error, avisale a tu docente.");
           return;
         }
       } catch(e) { console.warn("No se pudo verificar entregas previas:", e); }
@@ -378,7 +378,7 @@ function renderExamIntro(){
 function renderExamForm(){
   const exam = EXAMS[STATE.comision];
   app.appendChild(el("h1", {}, [txt("Comisión " + STATE.comision + " — Pruebita Práctico Purificación")]));
-  app.appendChild(el("div", {class:"sub"}, [txt(STATE.answers._nombre + " · N° " + STATE.answers._numero)]));
+  app.appendChild(el("div", {class:"sub"}, [txt(STATE.answers._nombre + " · DNI " + STATE.answers._numero)]));
 
   if (STATE.restored) {
     app.appendChild(el("div", {class:"notice ok"}, [txt("Recuperamos las respuestas que habías completado antes de que se cerrara la página o se cortara la conexión. Revisalas y seguí donde quedaste.")]));
@@ -477,7 +477,7 @@ function renderExamDone(){
   if (STATE.lastDuplicado) {
     app.appendChild(el("div", {class:"card"}, [
       el("h2", {}, [txt("Ya habías entregado esta pruebita")]),
-      el("div", {class:"notice warn"}, [txt("El número de alumno " + STATE.answers._numero + " ya tiene una entrega registrada para esta comisión, así que no se guardó una segunda respuesta. Si pensás que es un error, avisale a tu docente.")])
+      el("div", {class:"notice warn"}, [txt("El DNI " + STATE.answers._numero + " ya tiene una entrega registrada para esta comisión, así que no se guardó una segunda respuesta. Si pensás que es un error, avisale a tu docente.")])
     ]));
     const backBtn = el("button", {class:"ghost"}, [txt("Volver al inicio")]);
     backBtn.onclick = () => { STATE.view="landing"; STATE.comision=null; render(); };
