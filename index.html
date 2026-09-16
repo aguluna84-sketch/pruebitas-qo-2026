@@ -349,24 +349,46 @@ function renderExamIntro(){
     el("h2", {}, [txt("Comisión " + STATE.comision + " — Pruebita Práctico Purificación")]),
     el("div", {class:"sub"}, [txt("Total: 10 puntos — 5 ejercicios de 2 puntos cada uno.")]),
     el("div", {class:"field"}, [ el("label",{},[txt("Nombre y apellido")]), el("input",{type:"text", id:"nombre"}) ]),
-    el("div", {class:"field"}, [ el("label",{},[txt("Número de alumno")]), el("input",{type:"text", id:"numero"}) ]),
+    el("div", {class:"field"}, [ el("label",{},[txt("DNI")]), el("input",{type:"text", id:"numero"}) ]),
+    el("div", {class:"field"}, [
+      el("label",{},[txt("DNI del vecino 1 (compañero/a sentado a un lado)")]),
+      el("input",{type:"text", id:"vecino1_dni"}),
+      el("label", {style:"display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:400;"}, [ el("input",{type:"checkbox", id:"vecino1_nadie"}), txt("No tengo a nadie de ese lado") ])
+    ]),
+    el("div", {class:"field"}, [
+      el("label",{},[txt("DNI del vecino 2 (compañero/a sentado al otro lado)")]),
+      el("input",{type:"text", id:"vecino2_dni"}),
+      el("label", {style:"display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:400;"}, [ el("input",{type:"checkbox", id:"vecino2_nadie"}), txt("No tengo a nadie de ese lado") ])
+    ]),
     el("button", {class:"primary"}, [txt("Comenzar")])
   ]);
+  const v1Input = card.querySelector("#vecino1_dni");
+  const v1Check = card.querySelector("#vecino1_nadie");
+  v1Check.onchange = () => { v1Input.disabled = v1Check.checked; if (v1Check.checked) v1Input.value = ""; };
+  const v2Input = card.querySelector("#vecino2_dni");
+  const v2Check = card.querySelector("#vecino2_nadie");
+  v2Check.onchange = () => { v2Input.disabled = v2Check.checked; if (v2Check.checked) v2Input.value = ""; };
   card.querySelector("button").onclick = async () => {
     const nombre = card.querySelector("#nombre").value.trim();
     const numero = card.querySelector("#numero").value.trim();
-    if (!nombre || !numero) { alert("Completá nombre y número de alumno."); return; }
+    const vecino1Dni = v1Input.value.trim();
+    const vecino1Nadie = v1Check.checked;
+    const vecino2Dni = v2Input.value.trim();
+    const vecino2Nadie = v2Check.checked;
+    if (!nombre || !numero) { alert("Completá nombre y DNI."); return; }
+    if (!vecino1Nadie && !vecino1Dni) { alert("Indicá el DNI del vecino 1 o marcá 'No tengo a nadie de ese lado'."); return; }
+    if (!vecino2Nadie && !vecino2Dni) { alert("Indicá el DNI del vecino 2 o marcá 'No tengo a nadie de ese lado'."); return; }
     if (CONFIG.APPS_SCRIPT_URL) {
       try {
         const resp = await fetch(CONFIG.APPS_SCRIPT_URL + "?action=checkNumero&comision=" + encodeURIComponent(STATE.comision) + "&numero=" + encodeURIComponent(numero));
         const data = await resp.json();
         if (data && data.yaEnvio) {
-          alert("El número de alumno " + numero + " ya tiene una entrega registrada para esta comisión. Si creés que es un error, avisale a tu docente.");
+          alert("El DNI " + numero + " ya tiene una entrega registrada para esta comisión. Si creés que es un error, avisale a tu docente.");
           return;
         }
       } catch(e) { console.warn("No se pudo verificar entregas previas:", e); }
     }
-    STATE.answers = { _nombre: nombre, _numero: numero };
+    STATE.answers = { _nombre: nombre, _numero: numero, _vecino1_dni: vecino1Nadie ? "" : vecino1Dni, _vecino1_nadie: vecino1Nadie, _vecino2_dni: vecino2Nadie ? "" : vecino2Dni, _vecino2_nadie: vecino2Nadie };
     STATE.restored = false;
     STATE.view = "exam_form";
     saveDraftToLocal();
@@ -378,7 +400,7 @@ function renderExamIntro(){
 function renderExamForm(){
   const exam = EXAMS[STATE.comision];
   app.appendChild(el("h1", {}, [txt("Comisión " + STATE.comision + " — Pruebita Práctico Purificación")]));
-  app.appendChild(el("div", {class:"sub"}, [txt(STATE.answers._nombre + " · N° " + STATE.answers._numero)]));
+  app.appendChild(el("div", {class:"sub"}, [txt(STATE.answers._nombre + " · DNI " + STATE.answers._numero)]));
 
   if (STATE.restored) {
     app.appendChild(el("div", {class:"notice ok"}, [txt("Recuperamos las respuestas que habías completado antes de que se cerrara la página o se cortara la conexión. Revisalas y seguí donde quedaste.")]));
@@ -421,7 +443,7 @@ function renderExamForm(){
 }
 
 function collectAnswers(formEl, exam){
-  const out = { _nombre: STATE.answers._nombre, _numero: STATE.answers._numero, comision: STATE.comision, tema: exam.tema, timestamp: new Date().toISOString() };
+  const out = { _nombre: STATE.answers._nombre, _numero: STATE.answers._numero, _vecino1_dni: STATE.answers._vecino1_dni || "", _vecino1_nadie: !!STATE.answers._vecino1_nadie, _vecino2_dni: STATE.answers._vecino2_dni || "", _vecino2_nadie: !!STATE.answers._vecino2_nadie, comision: STATE.comision, tema: exam.tema, timestamp: new Date().toISOString() };
   exam.sections.forEach(sec => {
     sec.fields.forEach(f => {
       if (f.type === "radio") {
@@ -477,7 +499,7 @@ function renderExamDone(){
   if (STATE.lastDuplicado) {
     app.appendChild(el("div", {class:"card"}, [
       el("h2", {}, [txt("Ya habías entregado esta pruebita")]),
-      el("div", {class:"notice warn"}, [txt("El número de alumno " + STATE.answers._numero + " ya tiene una entrega registrada para esta comisión, así que no se guardó una segunda respuesta. Si pensás que es un error, avisale a tu docente.")])
+      el("div", {class:"notice warn"}, [txt("El DNI " + STATE.answers._numero + " ya tiene una entrega registrada para esta comisión, así que no se guardó una segunda respuesta. Si pensás que es un error, avisale a tu docente.")])
     ]));
     const backBtn = el("button", {class:"ghost"}, [txt("Volver al inicio")]);
     backBtn.onclick = () => { STATE.view="landing"; STATE.comision=null; render(); };
