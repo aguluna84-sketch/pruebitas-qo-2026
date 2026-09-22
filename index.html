@@ -204,7 +204,7 @@ const EXAMS = {
    que ese defecto puntual de rotulado ya no aplica visualmente, pero el contenido es fiel al original en todo lo demás. */
 
 /* ============ ESTADO ============ */
-let STATE = { view:"landing", comision:null, docente:false, answers:{}, restored:false };
+let STATE = { view:"landing", comision:null, docente:false, answers:{}, restored:false, preview:false };
 let ENABLED = {5:false,6:false,7:false,8:false,9:false,10:false}; // default: todo deshabilitado hasta que el docente lo active
 
 async function tryLoadSharedConfig(){
@@ -319,12 +319,21 @@ function renderDocentePanel(){
 
   const card = el("div", {class:"card"});
   Object.keys(EXAMS).map(Number).sort((a,b)=>a-b).forEach(id => {
+    const viewBtn = el("button", {class:"ghost", style:"padding:6px 12px;font-size:0.85rem;"}, [txt("Ver examen")]);
+    viewBtn.onclick = () => {
+      STATE.comision = id;
+      STATE.preview = true;
+      STATE.answers = {};
+      STATE.restored = false;
+      STATE.view = "exam_form";
+      render();
+    };
     const row = el("div", {class:"toggle-row"}, [
       el("div", {}, [txt("Comisión " + id + " (TEMA " + EXAMS[id].tema + ")")]),
-      el("label", {class:"switch"}, [
+      el("div", {style:"display:flex;align-items:center;gap:12px;"}, [viewBtn, el("label", {class:"switch"}, [
         el("input", {type:"checkbox", ...(ENABLED[id]?{checked:"checked"}:{})}),
         el("span", {class:"slider"})
-      ])
+      ])])
     ]);
     row.querySelector("input").onchange = async (ev) => {
       ENABLED[id] = ev.target.checked;
@@ -399,8 +408,34 @@ function renderExamIntro(){
 
 function renderExamForm(){
   const exam = EXAMS[STATE.comision];
+
+  const back = el("button", {class:"backlink"}, [txt(STATE.preview ? "← Volver al panel docente" : "← Volver al menú")]);
+  back.onclick = () => {
+    if (STATE.preview) {
+      STATE.preview = false;
+      STATE.comision = null;
+      STATE.answers = {};
+      STATE.view = "docente_panel";
+      render();
+      return;
+    }
+    if (confirm("¿Volver al menú? Se va a borrar el progreso guardado de este examen en este dispositivo.")) {
+      clearDraftFromLocal();
+      STATE.comision = null;
+      STATE.answers = {};
+      STATE.restored = false;
+      STATE.view = "landing";
+      render();
+    }
+  };
+  app.appendChild(back);
+
   app.appendChild(el("h1", {}, [txt("Comisión " + STATE.comision + " — Pruebita Práctico Purificación")]));
-  app.appendChild(el("div", {class:"sub"}, [txt(STATE.answers._nombre + " · DNI " + STATE.answers._numero)]));
+  if (STATE.preview) {
+    app.appendChild(el("div", {class:"sub"}, [txt("Vista previa docente — las respuestas no se guardan ni se envían")]));
+  } else {
+    app.appendChild(el("div", {class:"sub"}, [txt(STATE.answers._nombre + " · DNI " + STATE.answers._numero)]));
+  }
 
   if (STATE.restored) {
     app.appendChild(el("div", {class:"notice ok"}, [txt("Recuperamos las respuestas que habías completado antes de que se cerrara la página o se cortara la conexión. Revisalas y seguí donde quedaste.")]));
@@ -437,7 +472,13 @@ function renderExamForm(){
   });
 
   const submitBtn = el("button", {class:"primary"}, [txt("Entregar")]);
-  submitBtn.onclick = () => submitExam(form, exam);
+  if (STATE.preview) {
+    submitBtn.disabled = true;
+    submitBtn.title = "Vista previa: no se pueden entregar respuestas desde acá";
+    submitBtn.onclick = () => alert("Estás en modo vista previa (docente). No se pueden entregar respuestas desde acá.");
+  } else {
+    submitBtn.onclick = () => submitExam(form, exam);
+  }
   form.appendChild(el("div", {style:"margin-top:18px;"}, [submitBtn]));
   app.appendChild(form);
 }
@@ -526,6 +567,7 @@ function renderExamDone(){
 
 const DRAFT_KEY = "pruebita_draft_v1";
 function saveDraftToLocal(){
+  if (STATE.preview) return;
   try {
     localStorage.setItem(DRAFT_KEY, JSON.stringify({ comision: STATE.comision, answers: STATE.answers, ts: Date.now() }));
   } catch(e) { /* localStorage no disponible (modo privado, etc.): no se puede resguardar el borrador */ }
