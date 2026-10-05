@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pruebita TP 5 — Química Orgánica FCEFyN-UNC</title>
+<style>
+  :root{
+    --bg:#faf8f5; --ink:#2b2620; --muted:#6b6355; --line:#d8cfc0;
+    --accent:#3d3527; --accent-ink:#faf8f5; --ok:#2f5c2a; --ok-bg:#eef3ea; --ok-line:#c9dbc0;
+    --warn:#7a2f1f; --warn-bg:#f5e9e6; --warn-line:#e0bdb4;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);margin:0;padding:0;line-height:1.5;}
+  .wrap{max-width:820px;margin:0 auto;padding:28px 20px 80px;}
+  h1{font-size:1.4rem;margin:0 0 4px;}
+  h2{font-size:1.15rem;margin:0 0 12px;}
+  .sub{color:var(--muted);font-size:0.92rem;margin-bottom:22px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+  .com-btn{display:flex;flex-direction:column;align-items:flex-start;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;text-align:left;font-size:1rem;font-family:inherit;color:var(--ink);}
+  .com-btn:hover{border-color:var(--accent);}
+  .com-btn[disabled]{opacity:0.55;cursor:not-allowed;}
+  .badge{font-size:0.72rem;padding:2px 8px;border-radius:999px;font-weight:600;letter-spacing:.02em;}
+  .badge.on{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line);}
+  .badge.off{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-line);}
+  button.primary{background:var(--accent);color:var(--accent-ink);border:none;border-radius:8px;padding:11px 18px;font-size:0.95rem;cursor:pointer;}
+  button.primary:hover{opacity:0.92;}
+  button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-size:0.9rem;cursor:pointer;}
+  button.ghost:hover{border-color:var(--accent);}
+  input[type=text], input[type=number], textarea{
+    width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:0.95rem;background:#fffdfb;
+  }
+  textarea{min-height:70px;resize:vertical;}
+  label{display:block;font-weight:600;margin-bottom:6px;font-size:0.92rem;}
+  .field{margin-bottom:16px;}
+  .qtitle{font-weight:700;margin-bottom:8px;}
+  .points{font-weight:600;font-style:italic;color:var(--muted);font-size:0.85rem;}
+  .opt{display:flex;align-items:flex-start;gap:8px;padding:6px 0;cursor:pointer;font-size:0.94rem;}
+  .opt input{margin-top:3px;}
+  img.graph{max-width:280px;display:block;margin:10px 0;border:1px solid var(--line);border-radius:6px;}
+  .notice{padding:12px 14px;border-radius:10px;font-size:0.88rem;margin-bottom:16px;}
+  .notice.warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn);}
+  .notice.ok{background:var(--ok-bg);border:1px solid var(--ok-line);color:var(--ok);}
+  .toprow{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);}
+  .toggle-row:last-child{border-bottom:none;}
+  .switch{position:relative;width:44px;height:24px;flex:none;}
+  .switch input{opacity:0;width:0;height:0;}
+  .slider{position:absolute;cursor:pointer;inset:0;background:#d8cfc0;border-radius:999px;transition:.15s;}
+  .slider:before{content:"";position:absolute;height:18px;width:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s;}
+  input:checked + .slider{background:var(--ok);}
+  input:checked + .slider:before{transform:translateX(20px);}
+  .backlink{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.88rem;padding:0;margin-bottom:14px;text-decoration:underline;}
+  code{background:#f0ece4;padding:1px 5px;border-radius:4px;font-size:0.85em;}
+  .qsection{border-top:1px dashed var(--line);padding-top:16px;margin-top:16px;}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const EXAMS_TP5 = {
+ "1": {
+  "A": {
+   "codigo": "C1-A",
+   "comision": 1,
+   "tema": 1,
+   "letra": "A",
+   "variantes": "P1v1-P2v7-P3v2-P4v1-P5v8",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: hexano, 1-hexeno, diclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el color rojo desaparece al instante."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) hexano",
+        "b) 1-hexeno",
+        "c) diclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene ciclohexano y el otro ciclohexeno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con ciclohexano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con ciclohexeno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata butano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 2-bromobutano",
+        "b) 1-bromobutano",
+        "c) 2,3-dibromobutano",
+        "d) 1-buteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: CH₃CH₂CH₂CH₃ + Br• → CH₃–C•H–CH₂CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: CH₃–C•H–CH₂CH₃ + Br₂ → CH₃–CHBr–CH₂CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) El ensayo de Beilstein no detecta flúor porque el CuF₂ no es volátil.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Si se retira el tubo de la luz, la reacción se detiene inmediatamente y la solución permanece coloreada.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) La decoloración instantánea del Br₂/CCl₄ en oscuridad indica una reacción de adición al doble enlace.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) En el ensayo de Baeyer el permanganato se oxida.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) Un estudiante expone benceno con Br₂/CCl₄ al sol y no observa decoloración. ¿Cómo lo explica? (1 punto)",
+       "options": [
+        "a) El benceno no tiene átomos de hidrógeno para sustituir",
+        "b) El Br₂ se evaporó",
+        "c) El benceno necesita un catalizador para reaccionar con el Br₂",
+        "d) El benceno es un alqueno"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Si se logra bromar el benceno, ¿el producto conserva el anillo aromático? ¿Qué subproducto gaseoso se forma? (0,5 + 0,5 puntos) — ¿Conserva el anillo aromático?"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Subproducto gaseoso"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C1-B",
+   "comision": 1,
+   "tema": 2,
+   "letra": "B",
+   "variantes": "P1v2-P2v8-P3v3-P4v2-P5v9",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: benceno, 2-penteno, triclorometano o heptano. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de KMnO₄ diluido: la solución sigue violeta y no aparece precipitado.",
+      "3º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "4º) Se expone el tubo al sol unos segundos y se retira: el color rojo se va perdiendo paulatinamente."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) benceno",
+        "b) 2-penteno",
+        "c) triclorometano",
+        "d) heptano"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene diclorometano y el otro triclorometano. Ninguno de los ensayos químicos del práctico permite diferenciarlos. Proponga una propiedad física que lo permita, indique cuál de los dos compuestos presentaría el valor más alto y justifique brevemente.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Propiedad física"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "¿Cuál presenta el valor más alto?"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "textarea",
+       "label": "Justificación"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2-metilpropano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-2-metilpropano",
+        "b) 1,2-dibromo-2-metilpropano",
+        "c) 2-bromo-2-metilpropano",
+        "d) 2-metilpropeno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₃C• + Br• → (CH₃)₃CBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₃CH + Br• → (CH₃)₃C• + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₃C• + Br₂ → (CH₃)₃CBr + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) Cuando un alqueno decolora el Br₂/CCl₄ se desprende HBr.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) En la halogenación de un alcano, la luz participa solo en la etapa de iniciación, rompiendo homolíticamente la molécula de Br₂.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) Si en el ensayo de Beilstein la llama no se colorea, se descarta la presencia de cualquier halógeno.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) En el ensayo de Baeyer, el precipitado marrón que aparece es MnO₂.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) En la bromación catalizada del benceno se desprende HBr. Esto indica que: (1 punto)",
+       "options": [
+        "a) ocurrió una sustitución",
+        "b) ocurrió una adición",
+        "c) el catalizador se consumió",
+        "d) se formó un radical libre"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) En la bromación del benceno, ¿qué función cumple el FeBr₃? ¿Se consume durante la reacción? (0,5 + 0,5 puntos) — Función del FeBr₃"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "¿Se consume?"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "2": {
+  "A": {
+   "codigo": "C2-A",
+   "comision": 2,
+   "tema": 3,
+   "letra": "A",
+   "variantes": "P1v3-P2v9-P3v4-P4v3-P5v10",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: diclorometano, ciclohexano, 3-octeno o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Agregado de KMnO₄ diluido: la solución sigue violeta y no aparece precipitado.",
+      "2º) Test de Beilstein: la llama se colorea de verde azulado."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) diclorometano",
+        "b) ciclohexano",
+        "c) 3-octeno",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene octano y el otro 1-octeno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con octano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con 1-octeno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2-metilbutano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-3-metilbutano",
+        "b) 2-bromo-3-metilbutano",
+        "c) 1-bromo-2-metilbutano",
+        "d) 2-bromo-2-metilbutano"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₂CH–CH₂CH₃ + Br• → (CH₃)₂C•–CH₂CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: (CH₃)₂C•–CH₂CH₃ + Br₂ → (CH₃)₂CBr–CH₂CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) Dependiendo de la estructura del alcano, la bromación radicalaria puede dar más de un producto.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) El ensayo de Baeyer da positivo con alcanos porque se oxidan sus enlaces C–H.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) Un alqueno necesita luz para decolorar el Br₂/CCl₄.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La llama verde azulada del ensayo de Beilstein se debe a la formación de un haluro de cobre volátil.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) El intermediario de la sustitución electrofílica aromática (ion bencenonio) es: (1 punto)",
+       "options": [
+        "a) un radical",
+        "b) un carbocatión",
+        "c) un carbanión",
+        "d) un ion bromuro"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Para obtener clorobenceno a partir de benceno, ¿qué reactivo y qué catalizador usaría? (0,5 + 0,5 puntos) — Reactivo"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Catalizador"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C2-B",
+   "comision": 2,
+   "tema": 4,
+   "letra": "B",
+   "variantes": "P1v4-P2v10-P3v5-P4v4-P5v1",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: octano, benceno, 1-hepteno o triclorometano. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de KMnO₄ diluido: desaparece el color violeta y aparece un precipitado marrón."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) octano",
+        "b) benceno",
+        "c) 1-hepteno",
+        "d) triclorometano"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene pentano y el otro benceno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con pentano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con benceno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2,3-dimetilbutano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 2-bromo-2,3-dimetilbutano",
+        "b) 1-bromo-2,3-dimetilbutano",
+        "c) 2,3-dibromo-2,3-dimetilbutano",
+        "d) 2,3-dimetil-2-buteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₂C•–CH(CH₃)₂ + Br• → (CH₃)₂CBr–CH(CH₃)₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: (CH₃)₂C•–CH(CH₃)₂ + Br₂ → (CH₃)₂CBr–CH(CH₃)₂ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₂CH–CH(CH₃)₂ + Br• → (CH₃)₂C•–CH(CH₃)₂ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) El ensayo de Beilstein permite distinguir el diclorometano del triclorometano.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) El desprendimiento de HBr durante la reacción con bromo indica que ocurrió una sustitución y no una adición.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) En frío, un alqueno se oxida con KMnO₄ diluido formando un diol (glicol).",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La bromación de un alcano con luz siempre da un único producto.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) ¿Por qué el benceno no decolora el Br₂/CCl₄ en oscuridad, a diferencia de un alqueno? (1 punto)",
+       "options": [
+        "a) Porque no tiene enlaces π",
+        "b) Porque es un compuesto saturado",
+        "c) Porque el Br₂ no se disuelve en benceno",
+        "d) Porque sus electrones π están deslocalizados en el anillo, lo que le confiere una estabilidad especial"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) ¿Qué debería agregarse al tubo para que el benceno reaccione con el Br₂/CCl₄? ¿Qué gas se desprende al ocurrir la reacción? (0,5 + 0,5 puntos) — Qué se agrega"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Gas que se desprende"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "3": {
+  "A": {
+   "codigo": "C3-A",
+   "comision": 3,
+   "tema": 5,
+   "letra": "A",
+   "variantes": "P1v5-P2v1-P3v6-P4v5-P5v2",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: hexano, ciclohexeno, diclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "3º) Se expone el tubo al sol unos segundos: el líquido continúa rojo.",
+      "4º) Se agrega una pequeña cantidad de FeBr₃: el color rojo desaparece y se desprenden vapores ácidos (HBr)."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) hexano",
+        "b) ciclohexeno",
+        "c) diclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene hexano y el otro 1-hexeno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con hexano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con 1-hexeno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 3-metilpentano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-3-metilpentano",
+        "b) 3-bromo-3-metilpentano",
+        "c) 2-bromo-3-metilpentano",
+        "d) 3-(bromometil)pentano"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: CH₃CH₂–C•(CH₃)–CH₂CH₃ + Br₂ → CH₃CH₂–CBr(CH₃)–CH₂CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: CH₃CH₂–CH(CH₃)–CH₂CH₃ + Br• → CH₃CH₂–C•(CH₃)–CH₂CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) En las etapas de propagación se consume un radical y se genera otro.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) En la adición de Br₂ a un alqueno se rompe el enlace π y se forma un dibromuro vecinal.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) En el ensayo de Beilstein, el alambre de cobre se usa sin calentarlo previamente.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La desaparición del color violeta del KMnO₄ indica que el compuesto es un halogenuro de alquilo.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) La reacción característica del benceno es una: (1 punto)",
+       "options": [
+        "a) adición electrofílica",
+        "b) sustitución nucleofílica",
+        "c) sustitución electrofílica aromática",
+        "d) sustitución radicalaria"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) ¿Qué debería agregarse al tubo para que el benceno reaccione con el Br₂/CCl₄? ¿Qué gas se desprende al ocurrir la reacción? (0,5 + 0,5 puntos) — Qué se agrega"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Gas que se desprende"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C3-B",
+   "comision": 3,
+   "tema": 6,
+   "letra": "B",
+   "variantes": "P1v6-P2v2-P3v7-P4v6-P5v3",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: pentano, 2-hexeno, triclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "2º) Test de Beilstein: la llama no cambia de color.",
+      "3º) Se expone el tubo al sol unos segundos y se retira: el color rojo se va perdiendo paulatinamente."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) pentano",
+        "b) 2-hexeno",
+        "c) triclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene heptano y el otro diclorometano. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con heptano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con diclorometano"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2,2-dimetilbutano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-3,3-dimetilbutano",
+        "b) 1-bromo-2,2-dimetilbutano",
+        "c) 3-bromo-2,2-dimetilbutano",
+        "d) 3,3-dimetil-1-buteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₃C–C•H–CH₃ + Br• → (CH₃)₃C–CHBr–CH₃",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: (CH₃)₃C–CH₂CH₃ + Br• → (CH₃)₃C–C•H–CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₃C–C•H–CH₃ + Br₂ → (CH₃)₃C–CHBr–CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) El ensayo de Baeyer permite diferenciar un alqueno de un alcano.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Cada etapa de propagación necesita absorber luz para producirse.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) El ensayo de Beilstein da positivo tanto con el diclorometano como con el triclorometano.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) El alqueno decolora el Br₂/CCl₄ sin necesidad de exponer el tubo a la luz.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) ¿Por qué el benceno da reacciones de sustitución y no de adición? (1 punto)",
+       "options": [
+        "a) Porque la sustitución conserva el sistema aromático, que es muy estable",
+        "b) Porque el benceno no tiene átomos de hidrógeno",
+        "c) Porque la adición requiere luz",
+        "d) Porque el Br₂ actúa como nucleófilo"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) En la bromación del benceno, ¿qué función cumple el FeBr₃? ¿Se consume durante la reacción? (0,5 + 0,5 puntos) — Función del FeBr₃"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "¿Se consume?"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "4": {
+  "A": {
+   "codigo": "C4-A",
+   "comision": 4,
+   "tema": 7,
+   "letra": "A",
+   "variantes": "P1v7-P2v3-P3v8-P4v7-P5v4",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: heptano, 1-penteno, triclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Agregado de KMnO₄ diluido: la solución sigue violeta y no aparece precipitado.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "3º) Test de Beilstein: la llama se colorea de verde azulado."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) heptano",
+        "b) 1-penteno",
+        "c) triclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene 2-penteno y el otro benceno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con 2-penteno"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con benceno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2-metilpentano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 2-bromo-4-metilpentano",
+        "b) 3-bromo-2-metilpentano",
+        "c) 1-bromo-2-metilpentano",
+        "d) 2-bromo-2-metilpentano"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₂CH–CH₂CH₂CH₃ + Br• → (CH₃)₂C•–CH₂CH₂CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₂C•–CH₂CH₂CH₃ + Br₂ → (CH₃)₂CBr–CH₂CH₂CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) Un resultado positivo en el ensayo de Beilstein indica que el compuesto tiene un doble enlace.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) El precipitado marrón del ensayo de Baeyer es el producto orgánico de la reacción.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) La bromación de un alcano es una reacción de sustitución en la que se desprende HBr.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La adición de Br₂ a un alqueno es una reacción radicalaria.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) En la bromación del benceno, el FeBr₃ actúa como: (1 punto)",
+       "options": [
+        "a) base de Lewis",
+        "b) iniciador radicalario",
+        "c) ácido de Lewis",
+        "d) disolvente"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Si el benceno reacciona con Br₂ en presencia de FeBr₃, ¿se produce una adición o una sustitución? Nombre el producto orgánico. (0,5 + 0,5 puntos) — ¿Adición o sustitución?"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Producto orgánico"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C4-B",
+   "comision": 4,
+   "tema": 8,
+   "letra": "B",
+   "variantes": "P1v8-P2v4-P3v9-P4v8-P5v5",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: ciclohexano, 2-hepteno, diclorometano o triclorometano. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de KMnO₄ diluido: desaparece el color violeta y aparece un precipitado marrón."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) ciclohexano",
+        "b) 2-hepteno",
+        "c) diclorometano",
+        "d) triclorometano"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene hexano y el otro benceno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con hexano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con benceno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata metilciclopentano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-2-metilciclopentano",
+        "b) 1-bromo-1-metilciclopentano",
+        "c) (bromometil)ciclopentano",
+        "d) 1-bromo-3-metilciclopentano"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: radical 1-metilciclopentilo + Br₂ → 1-bromo-1-metilciclopentano + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: metilciclopentano + Br• → radical 1-metilciclopentilo + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: radical 1-metilciclopentilo + Br• → 1-bromo-1-metilciclopentano",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) La reacción de un alcano con Br₂ en presencia de luz transcurre a través de iones (carbocationes).",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Un alcano y un alqueno decoloran el Br₂/CCl₄ en oscuridad con igual rapidez.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) Si el KMnO₄ conserva su color violeta y no aparece precipitado, se descarta que el compuesto sea un alqueno.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) Antes de introducirlo en la muestra, el alambre de cobre se calienta para formar óxido de cobre (II).",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) En la bromación del benceno con FeBr₃, el electrófilo que ataca el anillo se genera a partir de: (1 punto)",
+       "options": [
+        "a) el Br₂ polarizado por el FeBr₃",
+        "b) el HBr",
+        "c) el CCl₄",
+        "d) el propio benceno"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Si el benceno reacciona con Br₂ en presencia de FeBr₃, ¿se produce una adición o una sustitución? Nombre el producto orgánico. (0,5 + 0,5 puntos) — ¿Adición o sustitución?"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Producto orgánico"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "5": {
+  "A": {
+   "codigo": "C5-A",
+   "comision": 5,
+   "tema": 9,
+   "letra": "A",
+   "variantes": "P1v9-P2v5-P3v10-P4v9-P5v6",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: octano, benceno, 1-hexeno o diclorometano. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Agregado de KMnO₄ diluido: la solución sigue violeta y no aparece precipitado.",
+      "2º) Test de Beilstein: la llama no cambia de color.",
+      "3º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "4º) Se expone el tubo al sol unos segundos y se retira: el color rojo se va perdiendo paulatinamente."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) octano",
+        "b) benceno",
+        "c) 1-hexeno",
+        "d) diclorometano"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene triclorometano y el otro benceno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con triclorometano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con benceno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2,4-dimetilpentano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 3-bromo-2,4-dimetilpentano",
+        "b) 1-bromo-2,4-dimetilpentano",
+        "c) 2-bromo-2,4-dimetilpentano",
+        "d) 2,4-dimetil-2-penteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₂C•–CH₂–CH(CH₃)₂ + Br₂ → (CH₃)₂CBr–CH₂–CH(CH₃)₂ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₂CH–CH₂–CH(CH₃)₂ + Br• → (CH₃)₂C•–CH₂–CH(CH₃)₂ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) La aparición del precipitado marrón en el ensayo de Baeyer indica que el permanganato se redujo.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Un alquino también decolora el Br₂/CCl₄ en oscuridad, porque adiciona bromo a su triple enlace.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) La coloración verde de la llama en el ensayo de Beilstein indica que el halógeno presente es cloro.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La etapa de terminación ocurre cuando dos radicales se combinan entre sí.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) Al agregar KMnO₄ diluido en frío al benceno: (1 punto)",
+       "options": [
+        "a) se forma un diol y un precipitado marrón",
+        "b) se forma ácido benzoico",
+        "c) reacciona solo si se expone a la luz",
+        "d) no reacciona y la solución sigue violeta"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Para obtener clorobenceno a partir de benceno, ¿qué reactivo y qué catalizador usaría? (0,5 + 0,5 puntos) — Reactivo"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Catalizador"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C5-B",
+   "comision": 5,
+   "tema": 10,
+   "letra": "B",
+   "variantes": "P1v10-P2v6-P3v1-P4v10-P5v7",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: 2-penteno, heptano, triclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "3º) Se expone el tubo al sol unos segundos: el líquido continúa rojo."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) 2-penteno",
+        "b) heptano",
+        "c) triclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene 3-octeno y el otro triclorometano. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con 3-octeno"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con triclorometano"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata propano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromopropano",
+        "b) 2-bromopropano",
+        "c) 1,2-dibromopropano",
+        "d) propeno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: CH₃–C•H–CH₃ + Br₂ → CH₃–CHBr–CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: CH₃–C•H–CH₃ + Br• → CH₃–CHBr–CH₃",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: CH₃CH₂CH₃ + Br• → CH₃–C•H–CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) El producto de la adición de Br₂ a un alqueno conserva el doble enlace.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Un resultado positivo en el ensayo de Beilstein indica la presencia de cloro, bromo o yodo en la muestra.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) La luz actúa en la etapa de terminación, uniendo los radicales entre sí.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) El ensayo de Baeyer permite diferenciar un alcano de un hidrocarburo aromático.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) ¿Qué afirmación describe la estructura del benceno? (1 punto)",
+       "options": [
+        "a) Tiene enlaces simples y dobles fijos alternados",
+        "b) Es plano, con carbonos sp² y electrones π deslocalizados",
+        "c) No es plano y sus carbonos son sp³",
+        "d) Tiene tres enlaces triples"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) ¿Qué debería agregarse al tubo para que el benceno reaccione con el Br₂/CCl₄? ¿Qué gas se desprende al ocurrir la reacción? (0,5 + 0,5 puntos) — Qué se agrega"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Gas que se desprende"
+      }
+     ]
+    }
+   ]
+  }
+ }
+};
+/* ============ CONFIGURACIÓN — cambiar acá ============ */
+const CONFIG = {
+  // URL del Web App de Apps Script de la planilla "Pruebitas TP5" (termina en /exec)
+  APPS_SCRIPT_URL: "PEGAR_ACA_LA_URL_DEL_WEB_APP",
+  DOCENTE_PASSCODE: "quimorg2026",
+  POLL_MS: 6000
+};
+const TITULO = "Pruebita TP 5 — Hidrocarburos, halogenuros de alquilo y aromáticos";
+
+/* ============ ESTADO ============ */
+let STATE = { view:"landing", comision:null, docente:false, answers:{}, letra:null, tema:null, restored:false, preview:false, faltan:[] };
+let ENABLED = {};
+let POLL = null;
+const app = document.getElementById("app");
+const backendOk = () => CONFIG.APPS_SCRIPT_URL && CONFIG.APPS_SCRIPT_URL.indexOf("/exec") > 0;
+
+async function apiGet(params){
+  const qs = Object.keys(params).map(k => k + "=" + encodeURIComponent(params[k])).join("&");
+  const resp = await fetch(CONFIG.APPS_SCRIPT_URL + "?" + qs);
+  return resp.json();
+}
+async function apiPost(body){
+  const resp = await fetch(CONFIG.APPS_SCRIPT_URL, { method:"POST", headers:{"Content-Type":"text/plain"}, body: JSON.stringify(body) });
+  return resp.json();
+}
+
+async function loadConfig(){
+  if (!backendOk()) return;
+  for (let i = 0; i < 3; i++) {
+    try { const d = await apiGet({action:"getConfig"}); if (d && d.enabled) { ENABLED = d.enabled; return; } }
+    catch(e) { console.warn("getConfig falló, reintento", e); }
+    await new Promise(r => setTimeout(r, 1500));
+  }
+}
+
+/* ============ helpers DOM ============ */
+function el(tag, attrs, children){
+  const e = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    if (k === "class") e.className = attrs[k];
+    else if (k === "html") e.innerHTML = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  }
+  (children||[]).forEach(c => { if (c) e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+  return e;
+}
+const comisionesConExamen = () => Object.keys(EXAMS_TP5).map(Number).sort((a,b)=>a-b);
+const examActual = () => (EXAMS_TP5[STATE.comision] || {})[STATE.letra];
+
+function render(){
+  app.innerHTML = "";
+  const v = STATE.view;
+  if (v === "landing") return renderLanding();
+  if (v === "docente_login") return renderDocenteLogin();
+  if (v === "docente_panel") return renderDocentePanel();
+  if (v === "exam_intro") return renderExamIntro();
+  if (v === "esperando") return renderEsperando();
+  if (v === "exam_form") return renderExamForm();
+  if (v === "exam_done") return renderExamDone();
+}
+
+/* ============ LANDING ============ */
+function renderLanding(){
+  const head = el("div", {class:"toprow"}, [
+    el("div", {}, [ el("h1", {}, [TITULO]), el("div", {class:"sub"}, ["Química Orgánica — Biología e Ingeniería Ambiental, FCEFyN-UNC"]) ]),
+    el("button", {class:"ghost"}, ["Modo docente"])
+  ]);
+  head.querySelector("button").onclick = () => { STATE.view = "docente_login"; render(); };
+  app.appendChild(head);
+  if (!backendOk()) app.appendChild(el("div", {class:"notice warn"}, ["⚠ Backend no configurado: falta pegar la URL del Web App en CONFIG.APPS_SCRIPT_URL. No usar con alumnos."]));
+  app.appendChild(el("div", {class:"sub"}, ["Elegí la comisión en la que estás rindiendo hoy."]));
+  const grid = el("div", {class:"grid"});
+  comisionesConExamen().forEach(id => {
+    const on = !!ENABLED[id];
+    const btn = el("button", Object.assign({class:"com-btn"}, on ? {} : {disabled:"disabled"}), [
+      el("div", {}, ["Comisión " + id]),
+      el("span", {class:"badge " + (on ? "on" : "off")}, [on ? "Habilitado" : "Deshabilitado"])
+    ]);
+    if (on) btn.onclick = () => { STATE.comision = id; STATE.view = "exam_intro"; render(); };
+    grid.appendChild(btn);
+  });
+  app.appendChild(grid);
+}
+
+/* ============ DOCENTE ============ */
+function renderDocenteLogin(){
+  const back = el("button", {class:"backlink"}, ["← Volver"]); back.onclick = () => { STATE.view="landing"; render(); };
+  app.appendChild(back);
+  const card = el("div", {class:"card"}, [
+    el("h2", {}, ["Acceso docente"]),
+    el("div", {class:"field"}, [ el("label", {}, ["Clave"]), el("input", {type:"text", id:"pass"}) ]),
+    el("button", {class:"primary"}, ["Ingresar"])
+  ]);
+  card.querySelector("button").onclick = () => {
+    if (card.querySelector("#pass").value === CONFIG.DOCENTE_PASSCODE) { STATE.docente = true; STATE.view = "docente_panel"; render(); }
+    else alert("Clave incorrecta.");
+  };
+  app.appendChild(card);
+}
+
+function renderDocentePanel(){
+  const back = el("button", {class:"backlink"}, ["← Volver a la vista de alumno"]); back.onclick = () => { STATE.view="landing"; render(); };
+  app.appendChild(back);
+  app.appendChild(el("h1", {}, ["Panel docente — TP 5"]));
+  app.appendChild(el("div", {class:"sub"}, ["Habilitá cada comisión cuando empiece la pruebita. \"Asignar ya\" entrega tema a los alumnos que siguen esperando a sus vecinos (por ejemplo, si un vecino faltó o escribió mal su DNI)."]));
+  const card = el("div", {class:"card"});
+  comisionesConExamen().forEach(id => {
+    const mkPrev = (letra) => {
+      const b = el("button", {class:"ghost", style:"padding:6px 10px;font-size:0.82rem;"}, ["Ver tema " + letra]);
+      b.onclick = () => { STATE.comision = id; STATE.letra = letra; STATE.preview = true; STATE.answers = {}; STATE.view = "exam_form"; render(); };
+      return b;
+    };
+    const forzar = el("button", {class:"ghost", style:"padding:6px 10px;font-size:0.82rem;"}, ["Asignar ya"]);
+    forzar.onclick = async () => {
+      if (!confirm("¿Asignar tema ahora a todos los que están esperando en la Comisión " + id + "?")) return;
+      try { const r = await apiPost({action:"forzarComision", comision:id, passcode:CONFIG.DOCENTE_PASSCODE}); alert("Listo: " + (r.forzados || 0) + " alumno(s) asignado(s)."); }
+      catch(e) { alert("No se pudo contactar al backend."); }
+    };
+    const sw = el("input", Object.assign({type:"checkbox"}, ENABLED[id] ? {checked:"checked"} : {}));
+    sw.onchange = async () => {
+      ENABLED[id] = sw.checked;
+      try { const r = await apiPost({action:"setConfig", enabled:{[id]: sw.checked}, passcode:CONFIG.DOCENTE_PASSCODE}); if (r && r.enabled) ENABLED = r.enabled; }
+      catch(e) { alert("No se pudo guardar en el backend."); }
+    };
+    card.appendChild(el("div", {class:"toggle-row"}, [
+      el("div", {}, ["Comisión " + id]),
+      el("div", {style:"display:flex;align-items:center;gap:8px;flex-wrap:wrap;"}, [mkPrev("A"), mkPrev("B"), forzar, el("label", {class:"switch"}, [sw, el("span", {class:"slider"})])])
+    ]));
+  });
+  app.appendChild(card);
+}
+
+/* ============ INTRO (identificación + vecinos) ============ */
+function renderExamIntro(){
+  const back = el("button", {class:"backlink"}, ["← Volver"]); back.onclick = () => { STATE.view="landing"; render(); };
+  app.appendChild(back);
+  const sel = el("select", {id:"cominsc", style:"width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:0.95rem;background:#fffdfb;"},
+    [el("option", {value:""}, ["— Elegí tu comisión —"])].concat([1,2,3,4,5,6,7,8,9,10].map(n => el("option", {value:String(n)}, ["Comisión " + n]))));
+  const vecino = (n) => el("div", {class:"field"}, [
+    el("label", {}, ["DNI del compañero/a sentado/a " + (n === 1 ? "a tu izquierda" : "a tu derecha")]),
+    el("input", {type:"text", id:"v"+n, inputmode:"numeric"}),
+    el("label", {style:"display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:400;"}, [el("input", {type:"checkbox", id:"v"+n+"n"}), "No tengo a nadie de ese lado"])
+  ]);
+  const card = el("div", {class:"card"}, [
+    el("h2", {}, ["Comisión " + STATE.comision + " — " + TITULO]),
+    el("div", {class:"sub"}, ["Total: 10 puntos — 5 ejercicios de 2 puntos cada uno."]),
+    el("div", {class:"field"}, [ el("label", {}, ["Nombre y apellido"]), el("input", {type:"text", id:"nombre"}) ]),
+    el("div", {class:"field"}, [ el("label", {}, ["DNI"]), el("input", {type:"text", id:"dni", inputmode:"numeric"}) ]),
+    el("div", {class:"field"}, [ el("label", {}, ["Comisión en la que estás inscripto/a"]), sel ]),
+    vecino(1), vecino(2),
+    el("button", {class:"primary"}, ["Comenzar"])
+  ]);
+  [1,2].forEach(n => { const c = card.querySelector("#v"+n+"n"), i = card.querySelector("#v"+n); c.onchange = () => { i.disabled = c.checked; if (c.checked) i.value = ""; }; });
+  const btn = card.querySelector("button.primary");
+  btn.onclick = async () => {
+    const q = s => card.querySelector(s);
+    const nombre = q("#nombre").value.trim();
+    const dni = q("#dni").value.replace(/[^0-9]/g, "");
+    const cominsc = q("#cominsc").value;
+    const v1 = q("#v1").value.replace(/[^0-9]/g, ""), v1n = q("#v1n").checked;
+    const v2 = q("#v2").value.replace(/[^0-9]/g, ""), v2n = q("#v2n").checked;
+    if (!nombre || !dni) return alert("Completá nombre y DNI.");
+    if (!cominsc) return alert("Elegí la comisión en la que estás inscripto/a.");
+    if (!v1n && !v1) return alert("Escribí el DNI de tu compañero/a de la izquierda o marcá 'No tengo a nadie de ese lado'.");
+    if (!v2n && !v2) return alert("Escribí el DNI de tu compañero/a de la derecha o marcá 'No tengo a nadie de ese lado'.");
+    if (v1 === dni || v2 === dni) return alert("Escribiste tu propio DNI como vecino. Revisalo.");
+    if (!backendOk()) return alert("La plataforma no está conectada al backend. Avisale a tu docente.");
+    btn.disabled = true; btn.textContent = "Registrando…";
+    try {
+      const chk = await apiGet({action:"checkNumero", numero:dni});
+      if (chk && chk.yaEnvio) { btn.disabled = false; btn.textContent = "Comenzar"; return alert("El DNI " + dni + " ya tiene una entrega registrada para el TP 5. Si es un error, avisale a tu docente."); }
+    } catch(e) { console.warn(e); }
+    STATE.answers = { _nombre:nombre, _numero:dni, _comision_inscripcion:cominsc, _vecino1_dni:v1n?"":v1, _vecino1_nadie:v1n, _vecino2_dni:v2n?"":v2, _vecino2_nadie:v2n };
+    STATE.letra = null; STATE.restored = false;
+    saveDraft();
+    await registrarYSeguir();
+    btn.disabled = false; btn.textContent = "Comenzar";
+  };
+  app.appendChild(card);
+}
+
+async function registrarYSeguir(){
+  const a = STATE.answers;
+  try {
+    const r = await apiPost({action:"registrar", data:{ comision:STATE.comision, dni:a._numero, nombre:a._nombre, comision_inscripcion:a._comision_inscripcion,
+      vecino1_dni:a._vecino1_dni, vecino1_nadie:a._vecino1_nadie, vecino2_dni:a._vecino2_dni, vecino2_nadie:a._vecino2_nadie }});
+    procesarEstado(r);
+  } catch(e) {
+    alert("No se pudo conectar con el servidor. Esperá unos segundos y volvé a tocar \"Comenzar\".");
+  }
+}
+
+function procesarEstado(r){
+  if (r && r.estado === "asignado") {
+    if (POLL) { clearInterval(POLL); POLL = null; }
+    STATE.letra = r.letra; STATE.tema = r.tema_num;
+    if (!examActual()) { alert("No hay examen cargado para Comisión " + STATE.comision + " tema " + r.letra + ". Avisale a tu docente."); return; }
+    saveDraft(); STATE.view = "exam_form"; render(); return;
+  }
+  if (r && r.estado === "esperando") {
+    STATE.faltan = r.faltan || [];
+    if (STATE.view !== "esperando") { STATE.view = "esperando"; render(); } else actualizarEspera();
+    if (!POLL) POLL = setInterval(async () => {
+      try { procesarEstado(await apiGet({action:"estado", comision:STATE.comision, dni:STATE.answers._numero})); } catch(e) { console.warn(e); }
+    }, CONFIG.POLL_MS);
+    return;
+  }
+  if (r && r.estado === "no_registrado") { registrarYSeguir(); return; }
+  alert("Respuesta inesperada del servidor" + (r && r.error ? ": " + r.error : "") + ". Avisale a tu docente.");
+}
+
+/* ============ ESPERA ============ */
+function renderEsperando(){
+  STATE.esperaDesde = STATE.esperaDesde || Date.now();
+  app.appendChild(el("div", {class:"card"}, [
+    el("h2", {}, ["Esperando a tus compañeros…"]),
+    el("div", {class:"sub"}, ["Para asignarte el tema, el sistema espera a que tus compañeros de al lado también se registren. No cierres esta página: el examen aparece solo."]),
+    el("div", {class:"notice ok", id:"espera-info"}, [""]),
+    el("div", {class:"sub"}, ["Si un compañero de al lado no vino o escribiste mal su DNI, avisale a tu docente."])
+  ]));
+  actualizarEspera();
+}
+function actualizarEspera(){
+  const box = document.getElementById("espera-info"); if (!box) return;
+  const n = (STATE.faltan || []).length;
+  const seg = Math.round((Date.now() - (STATE.esperaDesde || Date.now())) / 1000);
+  box.textContent = (n ? "Faltan registrarse " + n + " compañero(s) de tu fila." : "Asignando tema…") + "  (" + seg + " s)";
+}
+
+/* ============ EXAMEN ============ */
+function renderExamForm(){
+  const exam = examActual();
+  if (!exam) { app.appendChild(el("div", {class:"notice warn"}, ["No hay examen para esta comisión/tema."])); return; }
+  const back = el("button", {class:"backlink"}, [STATE.preview ? "← Volver al panel docente" : "← Volver al menú"]);
+  back.onclick = () => {
+    if (STATE.preview) { STATE.preview = false; STATE.comision = null; STATE.letra = null; STATE.view = "docente_panel"; render(); return; }
+    if (confirm("¿Volver al menú? Se borra el progreso guardado en este dispositivo.")) { clearDraft(); STATE = Object.assign(STATE, {comision:null, letra:null, answers:{}, view:"landing"}); render(); }
+  };
+  app.appendChild(back);
+  app.appendChild(el("h1", {}, ["Comisión " + STATE.comision + " — Pruebita TP 5"]));
+  app.appendChild(el("div", {class:"sub"}, [STATE.preview ? ("Vista previa docente — Tema " + exam.tema + " (" + exam.codigo + ", " + exam.variantes + ")") : (STATE.answers._nombre + " · DNI " + STATE.answers._numero + " · Tema " + exam.tema)]));
+  if (STATE.restored) app.appendChild(el("div", {class:"notice ok"}, ["Recuperamos las respuestas que habías completado. Revisalas y seguí donde quedaste."]));
+  const form = el("div", {class:"card"});
+  exam.sections.forEach(sec => {
+    const s = el("div", {class:"qsection"});
+    s.appendChild(el("div", {class:"qtitle"}, [sec.n + ") " + sec.intro + "  ", el("span", {class:"points"}, ["(" + sec.points + " puntos)"])]));
+    if (sec.pasos) { const ul = el("div", {style:"margin:4px 0 10px 8px;"}); sec.pasos.forEach(p => ul.appendChild(el("div", {style:"margin:3px 0;"}, [p]))); s.appendChild(ul); }
+    if (sec.post) s.appendChild(el("div", {style:"font-weight:600;margin-bottom:6px;"}, [sec.post]));
+    sec.fields.forEach(f => {
+      if (f.type === "radio") {
+        const b = el("div", {style:"margin-bottom:12px;"});
+        if (f.label) b.appendChild(el("div", {style:"margin-bottom:4px;"}, [f.label]));
+        f.options.forEach(opt => {
+          const attrs = {type:"radio", name:f.id, value:opt};
+          if (STATE.answers[f.id] === opt) attrs.checked = "checked";
+          const inp = el("input", attrs);
+          inp.onchange = () => { STATE.answers[f.id] = opt; saveDraft(); };
+          b.appendChild(el("label", {class:"opt"}, [inp, opt]));
+        });
+        s.appendChild(b);
+      } else {
+        const d = el("div", {class:"field"});
+        d.appendChild(el("label", {}, [f.label || ""]));
+        const inp = el(f.type === "textarea" ? "textarea" : "input", {type:"text", "data-id":f.id});
+        if (STATE.answers[f.id]) inp.value = STATE.answers[f.id];
+        inp.addEventListener("input", () => { STATE.answers[f.id] = inp.value; saveDraft(); });
+        d.appendChild(inp); s.appendChild(d);
+      }
+    });
+    form.appendChild(s);
+  });
+  const submit = el("button", {class:"primary"}, ["Entregar"]);
+  if (STATE.preview) { submit.disabled = true; } else submit.onclick = () => { if (confirm("¿Entregar la pruebita? No vas a poder modificarla.")) submitExam(form, exam); };
+  form.appendChild(el("div", {style:"margin-top:18px;"}, [submit]));
+  app.appendChild(form);
+}
+
+function collectAnswers(formEl, exam){
+  const a = STATE.answers;
+  const out = { _tema: exam.tema, _tema_codigo: exam.codigo, _letra: exam.letra, _variantes: exam.variantes,
+    _nombre: a._nombre, _numero: a._numero, _comision_inscripcion: a._comision_inscripcion, comision: STATE.comision,
+    _vecino1_dni: a._vecino1_dni || "", _vecino1_nadie: !!a._vecino1_nadie, _vecino2_dni: a._vecino2_dni || "", _vecino2_nadie: !!a._vecino2_nadie,
+    timestamp: new Date().toISOString() };
+  exam.sections.forEach(sec => sec.fields.forEach(f => {
+    if (f.type === "radio") { const c = formEl.querySelector('input[name="' + f.id + '"]:checked'); out[f.id] = c ? c.value : ""; }
+    else { const i = formEl.querySelector('[data-id="' + f.id + '"]'); out[f.id] = i ? i.value : ""; }
+  }));
+  return out;
+}
+
+async function submitExam(formEl, exam){
+  const answers = collectAnswers(formEl, exam);
+  STATE.lastSent = false; STATE.lastDup = false; STATE.lastFormEl = formEl; STATE.lastExam = exam;
+  try {
+    const r = await apiPost({action:"submitResponse", data:answers});
+    if (r && r.error === "duplicado") STATE.lastDup = true;
+    else if (r && r.ok) STATE.lastSent = true;
+  } catch(e) { console.warn(e); }
+  if (STATE.lastSent || STATE.lastDup) clearDraft();
+  STATE.view = "exam_done"; render();
+}
+
+function renderExamDone(){
+  const volver = el("button", {class:"ghost"}, ["Volver al inicio"]);
+  volver.onclick = () => { STATE = Object.assign(STATE, {view:"landing", comision:null, letra:null, answers:{}}); render(); };
+  if (STATE.lastDup) {
+    app.appendChild(el("div", {class:"card"}, [el("h2", {}, ["Ya habías entregado esta pruebita"]), el("div", {class:"notice warn"}, ["Tu DNI ya tiene una entrega registrada; no se guardó una segunda. Si es un error, avisale a tu docente."])]));
+    app.appendChild(volver);
+  } else if (STATE.lastSent) {
+    app.appendChild(el("div", {class:"card"}, [el("h2", {}, ["¡Listo!"]), el("div", {class:"sub"}, ["Tu respuesta fue registrada. Ya podés cerrar esta página."])]));
+    app.appendChild(volver);
+  } else {
+    const card = el("div", {class:"card"}, [el("h2", {}, ["No se pudo guardar tu respuesta"]), el("div", {class:"notice warn"}, ["Hubo un problema de conexión. Tus respuestas siguen guardadas en este dispositivo. Probá de nuevo y, si no funciona, avisale a tu docente."])]);
+    const retry = el("button", {class:"primary"}, ["Reintentar envío"]);
+    retry.onclick = () => submitExam(STATE.lastFormEl, STATE.lastExam);
+    card.appendChild(retry); app.appendChild(card);
+  }
+}
+
+/* ============ BORRADOR LOCAL ============ */
+const DRAFT_KEY = "pruebita_tp5_draft_v1";
+function saveDraft(){ if (STATE.preview) return; try { localStorage.setItem(DRAFT_KEY, JSON.stringify({comision:STATE.comision, letra:STATE.letra, answers:STATE.answers, ts:Date.now()})); } catch(e){} }
+function loadDraft(){ try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch(e){ return null; } }
+function clearDraft(){ try { localStorage.removeItem(DRAFT_KEY); } catch(e){} }
+
+async function init(){
+  await loadConfig();
+  const d = loadDraft();
+  if (d && d.comision && EXAMS_TP5[d.comision] && d.answers && d.answers._numero) {
+    STATE.comision = d.comision; STATE.answers = d.answers; STATE.restored = true;
+    if (d.letra && EXAMS_TP5[d.comision][d.letra]) { STATE.letra = d.letra; STATE.view = "exam_form"; render(); return; }
+    STATE.view = "esperando"; render(); registrarYSeguir(); return;
+  }
+  render();
+}
+init();
+</script>
+</body>
+</html>
