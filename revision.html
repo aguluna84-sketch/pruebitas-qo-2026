@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Revisión Pruebita TP 5 — Química Orgánica FCEFyN-UNC</title>
+<style>
+  :root{
+    --bg:#faf8f5; --ink:#2b2620; --muted:#6b6355; --line:#d8cfc0;
+    --accent:#3d3527; --accent-ink:#faf8f5; --ok:#2f5c2a; --ok-bg:#eef3ea; --ok-line:#c9dbc0;
+    --warn:#7a2f1f; --warn-bg:#f5e9e6; --warn-line:#e0bdb4; --mid:#7a5a14; --mid-bg:#f8f1de; --mid-line:#e3d3a3;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);margin:0;padding:0;line-height:1.5;}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px;}
+  h1{font-size:1.4rem;margin:0 0 4px;}
+  h2{font-size:1.1rem;margin:0 0 10px;}
+  .sub{color:var(--muted);font-size:0.92rem;margin-bottom:22px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;}
+  button.primary{background:var(--accent);color:var(--accent-ink);border:none;border-radius:8px;padding:11px 18px;font-size:0.95rem;cursor:pointer;}
+  button.primary:hover{opacity:0.92;}
+  button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-size:0.9rem;cursor:pointer;}
+  button.ghost:hover{border-color:var(--accent);}
+  input[type=text], input[type=password], input[type=number], select{
+    width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:0.95rem;background:#fffdfb;
+  }
+  label{display:block;font-weight:600;margin-bottom:6px;font-size:0.92rem;}
+  .field{margin-bottom:14px;}
+  .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+  .qtitle{font-weight:700;margin-bottom:8px;}
+  .points{font-weight:600;font-style:italic;color:var(--muted);font-size:0.85rem;}
+  .qsection{border-top:1px dashed var(--line);padding-top:16px;margin-top:16px;}
+  .notice{padding:12px 14px;border-radius:10px;font-size:0.9rem;margin-bottom:16px;}
+  .notice.warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn);}
+  .notice.ok{background:var(--ok-bg);border:1px solid var(--ok-line);color:var(--ok);}
+  .notice.mid{background:var(--mid-bg);border:1px solid var(--mid-line);color:var(--mid);}
+  .toprow{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+  table.res{border-collapse:collapse;width:100%;font-size:0.93rem;}
+  table.res th, table.res td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;}
+  table.res td.n, table.res th.n{text-align:right;white-space:nowrap;}
+  table.res tr.tot td{font-weight:700;border-top:2px solid var(--accent);border-bottom:none;}
+  .opt{display:flex;align-items:flex-start;gap:8px;padding:5px 8px;border-radius:8px;font-size:0.94rem;border:1px solid transparent;}
+  .opt input{margin-top:4px;}
+  .opt.good{background:var(--ok-bg);border-color:var(--ok-line);}
+  .opt.bad{background:var(--warn-bg);border-color:var(--warn-line);}
+  .tag{font-size:0.74rem;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:6px;white-space:nowrap;}
+  .tag.good{background:var(--ok);color:#fff;}
+  .tag.bad{background:var(--warn);color:#fff;}
+  .ans{padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fffdfb;white-space:pre-wrap;word-break:break-word;font-size:0.95rem;}
+  .ans.blank{color:var(--muted);font-style:italic;}
+  .key{padding:9px 11px;border:1px solid var(--ok-line);border-radius:8px;background:var(--ok-bg);color:var(--ok);font-size:0.92rem;margin-top:6px;white-space:pre-wrap;}
+  .nokey{padding:7px 11px;border:1px solid var(--warn-line);border-radius:8px;background:var(--warn-bg);color:var(--warn);font-size:0.88rem;margin-top:6px;}
+  .score{display:inline-block;font-weight:700;font-size:0.85rem;padding:2px 10px;border-radius:999px;margin-right:8px;}
+  .score.full{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line);}
+  .score.part{background:var(--mid-bg);color:var(--mid);border:1px solid var(--mid-line);}
+  .score.zero{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-line);}
+  .why{font-size:0.88rem;color:var(--muted);margin-top:6px;}
+  .fieldblock{margin-bottom:16px;}
+  .lbl{margin-bottom:4px;font-weight:600;font-size:0.92rem;}
+  @media print{ .noprint{display:none !important;} body{background:#fff;} .card{border:none;padding:0;} .wrap{padding:0;} }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+/* Página de revisión (docentes). No contiene claves ni respuestas correctas:
+   todo viene del backend (Apps Script) y solo si se ingresa la clave docente. */
+const app = document.getElementById("app");
+let EXAMS = null, API_URL = "", LAST = null;
+
+function el(tag, attrs, children){
+  const e = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    if (k === "class") e.className = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  }
+  (children || []).forEach(c => { if (c != null && c !== "") e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+  return e;
+}
+const fmt = x => String(Math.round(x * 100) / 100).replace(".", ",");
+function ssGet(k){ try { return sessionStorage.getItem(k) || ""; } catch(e){ return ""; } }
+function ssSet(k, v){ try { sessionStorage.setItem(k, v); } catch(e){} }
+
+/* Los enunciados se leen de la página de los alumnos (tp5.html), así no hay copias que se desactualicen. */
+async function cargarDatos(){
+  const resp = await fetch("tp5.html?v=" + Date.now());
+  const txt = await resp.text();
+  const i = txt.indexOf("const EXAMS_TP5 = ");
+  if (i < 0) throw new Error("No se encontró EXAMS_TP5");
+  const ini = i + "const EXAMS_TP5 = ".length;
+  const fin = txt.indexOf("\n};", ini);
+  EXAMS = JSON.parse(txt.slice(ini, fin + 2));
+  const m = txt.match(/APPS_SCRIPT_URL:\s*"([^"]+)"/);
+  API_URL = m ? m[1] : "";
+}
+function buscarExamen(codigo){
+  for (const c in EXAMS) for (const l in EXAMS[c]) if (EXAMS[c][l].codigo === codigo) return EXAMS[c][l];
+  return null;
+}
+async function api(body){
+  const resp = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(body) });
+  return resp.json();
+}
+
+/* ---------- pantalla de consulta ---------- */
+function vistaConsulta(msg, tipo, extra){
+  app.innerHTML = "";
+  app.appendChild(el("h1", {}, ["Revisión de pruebitas — TP 5"]));
+  app.appendChild(el("div", {class:"sub"}, ["Acceso docente. Ingresá el DNI del alumno para ver su examen tal como lo completó, con las respuestas correctas, el puntaje de cada ítem y el motivo."]));
+  const card = el("div", {class:"card"});
+  if (msg) card.appendChild(el("div", {class:"notice " + (tipo || "warn")}, [msg]));
+  const clave = el("input", {type:"password", autocomplete:"off", id:"clave"}); clave.value = ssGet("rev_clave");
+  const sel = el("select", {id:"com"});
+  sel.appendChild(el("option", {value:""}, ["Cualquiera"]));
+  for (let i = 1; i <= 10; i++) { const o = el("option", {value:String(i)}, ["Comisión " + i]); sel.appendChild(o); }
+  const pre = new URLSearchParams(location.search).get("com") || ssGet("rev_com");
+  if (pre) sel.value = pre;
+  const dni = el("input", {type:"text", inputmode:"numeric", id:"dni", placeholder:"Solo números"});
+  if (extra && extra.dni) dni.value = extra.dni;
+  card.appendChild(el("div", {class:"field"}, [el("label", {}, ["Clave docente"]), clave]));
+  card.appendChild(el("div", {class:"row"}, [
+    el("div", {class:"field"}, [el("label", {}, ["Comisión donde rindió"]), sel]),
+    el("div", {class:"field"}, [el("label", {}, ["DNI del alumno"]), dni])
+  ]));
+  const btn = el("button", {class:"primary"}, ["Ver examen corregido"]);
+  const go = () => consultar(clave.value, sel.value, dni.value, "");
+  btn.onclick = go;
+  dni.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+  card.appendChild(btn);
+  app.appendChild(card);
+  if (extra && extra.entregas) {
+    const c2 = el("div", {class:"card"}, [el("h2", {}, ["Hay más de una entrega con ese DNI"])]);
+    extra.entregas.forEach(en => {
+      const b = el("button", {class:"ghost", style:"margin:4px 8px 4px 0;"}, [en.tema_codigo + " — " + en.id_entrega]);
+      b.onclick = () => consultar(clave.value, sel.value, dni.value, en.id_entrega);
+      c2.appendChild(b);
+    });
+    app.appendChild(c2);
+  }
+}
+
+async function consultar(clave, com, dni, idEntrega){
+  if (!clave || !String(dni).replace(/\D/g, "")) { vistaConsulta("Completá la clave y el DNI.", "warn", {dni}); return; }
+  if (!API_URL) { vistaConsulta("No se pudo determinar la dirección del backend.", "warn", {dni}); return; }
+  app.innerHTML = ""; app.appendChild(el("div", {class:"notice mid"}, ["Consultando…"]));
+  let r;
+  try { r = await api({action:"revision", clave:clave, comision:com, dni:dni, id_entrega:idEntrega}); }
+  catch(e) { vistaConsulta("No se pudo contactar al backend. Probá de nuevo en unos segundos.", "warn", {dni}); return; }
+  if (r.error === "no_autorizado") { vistaConsulta("Clave incorrecta.", "warn", {dni}); return; }
+  if (r.error === "bloqueado") { vistaConsulta("Demasiados intentos con clave incorrecta. Esperá 10 minutos.", "warn", {dni}); return; }
+  if (r.error) { vistaConsulta("Error: " + r.error, "warn", {dni}); return; }
+  ssSet("rev_clave", clave); ssSet("rev_com", com || "");
+  if (r.estado === "no_encontrado") { vistaConsulta("No hay entrega corregida para ese DNI" + (com ? " en la comisión " + com : "") + ". Verificá el DNI y la comisión (la comisión donde rindió, no la de inscripción).", "warn", {dni}); return; }
+  if (r.estado === "pendiente") { vistaConsulta("La corrección de " + (r.nombre || "este alumno") + " todavía no está completa (" + r.pendientes + " ítem(s) abiertos sin corregir). Todavía no se puede mostrar.", "mid", {dni}); return; }
+  if (r.estado === "varias") { vistaConsulta("", "", {dni, entregas: r.entregas}); return; }
+  if (r.estado === "ok") { LAST = r; vistaResultado(r); return; }
+  vistaConsulta("Respuesta inesperada del backend.", "warn", {dni});
+}
+
+/* ---------- pantalla de resultado ---------- */
+function clasePuntaje(p, m){ if (m <= 0) return p >= 0 ? "full" : "zero"; if (p >= m) return "full"; if (p <= 0) return "zero"; return "part"; }
+function esCorrecta(it, opt){
+  if (!it) return false;
+  if (it.tipo === "radio") { const a = opt.match(/^([a-d])\)/i), b = it.correcta.match(/^([a-d])\)/i); return !!(a && b && a[1].toLowerCase() === b[1].toLowerCase()); }
+  return opt.trim().toLowerCase() === it.correcta.trim().toLowerCase();
+}
+function esElegida(it, opt){
+  if (!it || !it.respuesta) return false;
+  if (it.tipo === "radio") { const a = opt.match(/^([a-d])\)/i), b = it.respuesta.match(/^([a-d])\)/i); return !!(a && b && a[1].toLowerCase() === b[1].toLowerCase()); }
+  return opt.trim().toLowerCase() === it.respuesta.trim().toLowerCase();
+}
+function bloquePuntaje(it){
+  const parts = [el("span", {class:"score " + clasePuntaje(it.puntaje, it.maximo)}, [fmt(it.puntaje) + " / " + fmt(it.maximo)])];
+  if (it.motivo) parts.push(document.createTextNode(it.motivo));
+  const d = el("div", {class:"why"}, parts);
+  if (it.corregido_por) d.appendChild(el("span", {style:"opacity:.7;"}, ["  (" + it.corregido_por + ")"]));
+  return d;
+}
+
+function vistaResultado(r){
+  app.innerHTML = "";
+  const top = el("div", {class:"toprow noprint"});
+  const back = el("button", {class:"ghost"}, ["← Otra consulta"]); back.onclick = () => vistaConsulta("", "", {});
+  const pr = el("button", {class:"ghost"}, ["Imprimir / guardar PDF"]); pr.onclick = () => window.print();
+  top.appendChild(back); top.appendChild(pr); app.appendChild(top);
+
+  app.appendChild(el("h1", {}, [r.nombre || "Alumno"]));
+  app.appendChild(el("div", {class:"sub"}, ["DNI " + r.dni + " · Rindió en la comisión " + r.comision_rinde + (r.comision_inscripcion && r.comision_inscripcion !== r.comision_rinde ? " (inscripto en la " + r.comision_inscripcion + ")" : "") + " · " + r.tema_codigo]));
+
+  const tabla = el("table", {class:"res"});
+  tabla.appendChild(el("tr", {}, [el("th", {}, ["Ejercicio"]), el("th", {class:"n"}, ["Puntaje"]), el("th", {class:"n"}, ["Máximo"])]));
+  ["P1", "P2", "P3", "P4", "P5"].forEach(k => {
+    const e = r.ejercicios[k] || {puntaje:0, maximo:0};
+    tabla.appendChild(el("tr", {}, [el("td", {}, [k]), el("td", {class:"n"}, [fmt(e.puntaje)]), el("td", {class:"n"}, [fmt(e.maximo)])]));
+  });
+  tabla.appendChild(el("tr", {class:"tot"}, [el("td", {}, ["Total"]), el("td", {class:"n"}, [fmt(r.total)]), el("td", {class:"n"}, [fmt(r.maximo)])]));
+  const resumen = el("div", {class:"card"}, [el("h2", {}, ["Resumen de la nota"]), tabla]);
+  app.appendChild(resumen);
+
+  const porCampo = {}, sinCampo = {};
+  r.items.forEach(it => { if (it.campo) porCampo[it.campo] = it; else (sinCampo[it.ej] = sinCampo[it.ej] || []).push(it); });
+  const exam = buscarExamen(r.tema_codigo);
+  const form = el("div", {class:"card"});
+  if (!exam) {
+    form.appendChild(el("div", {class:"notice warn"}, ["No se encontró el enunciado de este tema en la página de los alumnos; se muestra solo el detalle por ítem."]));
+    r.items.forEach(it => {
+      form.appendChild(el("div", {class:"fieldblock"}, [el("div", {class:"lbl"}, [it.enunciado]), el("div", {class:"ans" + (it.respuesta ? "" : " blank")}, [it.respuesta || "(en blanco)"]), el("div", {class:"key"}, ["Correcta: " + it.correcta]), bloquePuntaje(it)]));
+    });
+  } else {
+    form.appendChild(el("h2", {}, ["Examen tal como lo vio el alumno — Tema " + exam.tema + " (" + exam.codigo + ")"]));
+    exam.sections.forEach(sec => {
+      const s = el("div", {class:"qsection"});
+      s.appendChild(el("div", {class:"qtitle"}, [sec.n + ") " + sec.intro + "  ", el("span", {class:"points"}, ["(" + sec.points + " puntos)"])]));
+      if (sec.pasos) { const ul = el("div", {style:"margin:4px 0 10px 8px;"}); sec.pasos.forEach(p => ul.appendChild(el("div", {style:"margin:3px 0;"}, [p]))); s.appendChild(ul); }
+      if (sec.post) s.appendChild(el("div", {style:"font-weight:600;margin-bottom:6px;"}, [sec.post]));
+      sec.fields.forEach(f => {
+        const it = porCampo[f.id];
+        const b = el("div", {class:"fieldblock"});
+        if (f.type === "radio") {
+          if (f.label) b.appendChild(el("div", {class:"lbl"}, [f.label]));
+          f.options.forEach(opt => {
+            const ok = esCorrecta(it, opt), el_ = esElegida(it, opt);
+            const inp = el("input", Object.assign({type:"radio", disabled:"disabled"}, el_ ? {checked:"checked"} : {}));
+            const row = el("label", {class:"opt" + (ok ? " good" : (el_ ? " bad" : ""))}, [inp, opt]);
+            if (ok) row.appendChild(el("span", {class:"tag good"}, ["correcta"]));
+            else if (el_) row.appendChild(el("span", {class:"tag bad"}, ["respuesta del alumno"]));
+            if (ok && el_) row.appendChild(el("span", {class:"tag good"}, ["marcada"]));
+            b.appendChild(row);
+          });
+          if (it && !it.respuesta) b.appendChild(el("div", {class:"ans blank", style:"margin-top:6px;"}, ["(el alumno no respondió)"]));
+        } else {
+          b.appendChild(el("div", {class:"lbl"}, [f.label || ""]));
+          const t = it ? it.respuesta : "";
+          b.appendChild(el("div", {class:"ans" + (t ? "" : " blank")}, [t || "(en blanco)"]));
+          if (it) b.appendChild(el("div", {class:"key"}, ["Respuesta esperada: " + it.correcta]));
+          if (it && it.no_aceptar && it.no_aceptar !== "—") b.appendChild(el("div", {class:"nokey"}, ["No se acepta: " + it.no_aceptar]));
+        }
+        if (it) b.appendChild(bloquePuntaje(it));
+        else b.appendChild(el("div", {class:"why"}, ["Sin dato de corrección para este campo."]));
+        s.appendChild(b);
+      });
+      (sinCampo["P" + sec.n] || []).forEach(it => {
+        s.appendChild(el("div", {class:"fieldblock"}, [el("div", {class:"lbl"}, [it.enunciado]), bloquePuntaje(it)]));
+      });
+      form.appendChild(s);
+    });
+  }
+  app.appendChild(form);
+}
+
+(async function init(){
+  app.appendChild(el("div", {class:"notice mid"}, ["Cargando…"]));
+  try { await cargarDatos(); }
+  catch(e) { app.innerHTML = ""; app.appendChild(el("div", {class:"notice warn"}, ["No se pudieron cargar los datos de los exámenes (" + e.message + ")."])); return; }
+  vistaConsulta("", "", {});
+})();
+</script>
+</body>
+</html>
