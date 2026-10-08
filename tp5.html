@@ -1948,6 +1948,1516 @@ const EXAMS_TP5 = {
     }
    ]
   }
+ },
+ "7": {
+  "A": {
+   "codigo": "C7-A",
+   "comision": 7,
+   "tema": 11,
+   "letra": "A",
+   "variantes": "P1v3-P2v4-P3v3-P4v1-P5v3",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: diclorometano, ciclohexano, 3-octeno o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Agregado de KMnO₄ diluido: la solución sigue violeta y no aparece precipitado.",
+      "2º) Test de Beilstein: la llama se colorea de verde azulado."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) diclorometano",
+        "b) ciclohexano",
+        "c) 3-octeno",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene hexano y el otro benceno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con hexano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con benceno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2-metilpropano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-2-metilpropano",
+        "b) 1,2-dibromo-2-metilpropano",
+        "c) 2-bromo-2-metilpropano",
+        "d) 2-metilpropeno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₃C• + Br• → (CH₃)₃CBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₃CH + Br• → (CH₃)₃C• + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₃C• + Br₂ → (CH₃)₃CBr + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) El ensayo de Beilstein no detecta flúor porque el CuF₂ no es volátil.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Si se retira el tubo de la luz, la reacción se detiene inmediatamente y la solución permanece coloreada.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) La decoloración instantánea del Br₂/CCl₄ en oscuridad indica una reacción de adición al doble enlace.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) En el ensayo de Baeyer el permanganato se oxida.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) ¿Por qué el benceno da reacciones de sustitución y no de adición? (1 punto)",
+       "options": [
+        "a) Porque la sustitución conserva el sistema aromático, que es muy estable",
+        "b) Porque el benceno no tiene átomos de hidrógeno",
+        "c) Porque la adición requiere luz",
+        "d) Porque el Br₂ actúa como nucleófilo"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) En la bromación del benceno, ¿qué función cumple el FeBr₃? ¿Se consume durante la reacción? (0,5 + 0,5 puntos) — Función del FeBr₃"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "¿Se consume?"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C7-B",
+   "comision": 7,
+   "tema": 12,
+   "letra": "B",
+   "variantes": "P1v10-P2v1-P3v10-P4v8-P5v10",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: 2-penteno, heptano, triclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "3º) Se expone el tubo al sol unos segundos: el líquido continúa rojo."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) 2-penteno",
+        "b) heptano",
+        "c) triclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene hexano y el otro 1-hexeno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con hexano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con 1-hexeno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2,4-dimetilpentano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 3-bromo-2,4-dimetilpentano",
+        "b) 1-bromo-2,4-dimetilpentano",
+        "c) 2-bromo-2,4-dimetilpentano",
+        "d) 2,4-dimetil-2-penteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₂C•–CH₂–CH(CH₃)₂ + Br₂ → (CH₃)₂CBr–CH₂–CH(CH₃)₂ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₂CH–CH₂–CH(CH₃)₂ + Br• → (CH₃)₂C•–CH₂–CH(CH₃)₂ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) La reacción de un alcano con Br₂ en presencia de luz transcurre a través de iones (carbocationes).",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Un alcano y un alqueno decoloran el Br₂/CCl₄ en oscuridad con igual rapidez.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) Si el KMnO₄ conserva su color violeta y no aparece precipitado, se descarta que el compuesto sea un alqueno.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) Antes de introducirlo en la muestra, el alambre de cobre se calienta para formar óxido de cobre (II).",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) El intermediario de la sustitución electrofílica aromática (ion bencenonio) es: (1 punto)",
+       "options": [
+        "a) un radical",
+        "b) un carbocatión",
+        "c) un carbanión",
+        "d) un ion bromuro"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Para obtener clorobenceno a partir de benceno, ¿qué reactivo y qué catalizador usaría? (0,5 + 0,5 puntos) — Reactivo"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Catalizador"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "8": {
+  "A": {
+   "codigo": "C8-A",
+   "comision": 8,
+   "tema": 13,
+   "letra": "A",
+   "variantes": "P1v7-P2v8-P3v7-P4v5-P5v7",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: heptano, 1-penteno, triclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Agregado de KMnO₄ diluido: la solución sigue violeta y no aparece precipitado.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "3º) Test de Beilstein: la llama se colorea de verde azulado."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) heptano",
+        "b) 1-penteno",
+        "c) triclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene diclorometano y el otro triclorometano. Ninguno de los ensayos químicos del práctico permite diferenciarlos. Proponga una propiedad física que lo permita, indique cuál de los dos compuestos presentaría el valor más alto y justifique brevemente.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Propiedad física"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "¿Cuál presenta el valor más alto?"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "textarea",
+       "label": "Justificación"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2,2-dimetilbutano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-3,3-dimetilbutano",
+        "b) 1-bromo-2,2-dimetilbutano",
+        "c) 3-bromo-2,2-dimetilbutano",
+        "d) 3,3-dimetil-1-buteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₃C–C•H–CH₃ + Br• → (CH₃)₃C–CHBr–CH₃",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: (CH₃)₃C–CH₂CH₃ + Br• → (CH₃)₃C–C•H–CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₃C–C•H–CH₃ + Br₂ → (CH₃)₃C–CHBr–CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) En las etapas de propagación se consume un radical y se genera otro.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) En la adición de Br₂ a un alqueno se rompe el enlace π y se forma un dibromuro vecinal.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) En el ensayo de Beilstein, el alambre de cobre se usa sin calentarlo previamente.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La desaparición del color violeta del KMnO₄ indica que el compuesto es un halogenuro de alquilo.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) ¿Qué afirmación describe la estructura del benceno? (1 punto)",
+       "options": [
+        "a) Tiene enlaces simples y dobles fijos alternados",
+        "b) Es plano, con carbonos sp² y electrones π deslocalizados",
+        "c) No es plano y sus carbonos son sp³",
+        "d) Tiene tres enlaces triples"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) ¿Qué debería agregarse al tubo para que el benceno reaccione con el Br₂/CCl₄? ¿Qué gas se desprende al ocurrir la reacción? (0,5 + 0,5 puntos) — Qué se agrega"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Gas que se desprende"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C8-B",
+   "comision": 8,
+   "tema": 14,
+   "letra": "B",
+   "variantes": "P1v4-P2v5-P3v4-P4v2-P5v4",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: octano, benceno, 1-hepteno o triclorometano. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de KMnO₄ diluido: desaparece el color violeta y aparece un precipitado marrón."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) octano",
+        "b) benceno",
+        "c) 1-hepteno",
+        "d) triclorometano"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene triclorometano y el otro benceno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con triclorometano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con benceno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2-metilbutano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromo-3-metilbutano",
+        "b) 2-bromo-3-metilbutano",
+        "c) 1-bromo-2-metilbutano",
+        "d) 2-bromo-2-metilbutano"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₂CH–CH₂CH₃ + Br• → (CH₃)₂C•–CH₂CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: (CH₃)₂C•–CH₂CH₃ + Br₂ → (CH₃)₂CBr–CH₂CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) Cuando un alqueno decolora el Br₂/CCl₄ se desprende HBr.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) En la halogenación de un alcano, la luz participa solo en la etapa de iniciación, rompiendo homolíticamente la molécula de Br₂.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) Si en el ensayo de Beilstein la llama no se colorea, se descarta la presencia de cualquier halógeno.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) En el ensayo de Baeyer, el precipitado marrón que aparece es MnO₂.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) En la bromación del benceno, el FeBr₃ actúa como: (1 punto)",
+       "options": [
+        "a) base de Lewis",
+        "b) iniciador radicalario",
+        "c) ácido de Lewis",
+        "d) disolvente"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Si el benceno reacciona con Br₂ en presencia de FeBr₃, ¿se produce una adición o una sustitución? Nombre el producto orgánico. (0,5 + 0,5 puntos) — ¿Adición o sustitución?"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Producto orgánico"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "9": {
+  "A": {
+   "codigo": "C9-A",
+   "comision": 9,
+   "tema": 15,
+   "letra": "A",
+   "variantes": "P1v1-P2v2-P3v1-P4v9-P5v1",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: hexano, 1-hexeno, diclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el color rojo desaparece al instante."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) hexano",
+        "b) 1-hexeno",
+        "c) diclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene heptano y el otro diclorometano. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con heptano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con diclorometano"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata propano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 1-bromopropano",
+        "b) 2-bromopropano",
+        "c) 1,2-dibromopropano",
+        "d) propeno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: CH₃–C•H–CH₃ + Br₂ → CH₃–CHBr–CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: CH₃–C•H–CH₃ + Br• → CH₃–CHBr–CH₃",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: CH₃CH₂CH₃ + Br• → CH₃–C•H–CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) La aparición del precipitado marrón en el ensayo de Baeyer indica que el permanganato se redujo.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Un alquino también decolora el Br₂/CCl₄ en oscuridad, porque adiciona bromo a su triple enlace.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) La coloración verde de la llama en el ensayo de Beilstein indica que el halógeno presente es cloro.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La etapa de terminación ocurre cuando dos radicales se combinan entre sí.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) ¿Por qué el benceno no decolora el Br₂/CCl₄ en oscuridad, a diferencia de un alqueno? (1 punto)",
+       "options": [
+        "a) Porque no tiene enlaces π",
+        "b) Porque es un compuesto saturado",
+        "c) Porque el Br₂ no se disuelve en benceno",
+        "d) Porque sus electrones π están deslocalizados en el anillo, lo que le confiere una estabilidad especial"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) ¿Qué debería agregarse al tubo para que el benceno reaccione con el Br₂/CCl₄? ¿Qué gas se desprende al ocurrir la reacción? (0,5 + 0,5 puntos) — Qué se agrega"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Gas que se desprende"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C9-B",
+   "comision": 9,
+   "tema": 16,
+   "letra": "B",
+   "variantes": "P1v8-P2v9-P3v8-P4v6-P5v8",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: ciclohexano, 2-hepteno, diclorometano o triclorometano. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de KMnO₄ diluido: desaparece el color violeta y aparece un precipitado marrón."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) ciclohexano",
+        "b) 2-hepteno",
+        "c) diclorometano",
+        "d) triclorometano"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene octano y el otro 1-octeno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con octano"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con 1-octeno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2-metilpentano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 2-bromo-4-metilpentano",
+        "b) 3-bromo-2-metilpentano",
+        "c) 1-bromo-2-metilpentano",
+        "d) 2-bromo-2-metilpentano"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: (CH₃)₂CH–CH₂CH₂CH₃ + Br• → (CH₃)₂C•–CH₂CH₂CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₂C•–CH₂CH₂CH₃ + Br₂ → (CH₃)₂CBr–CH₂CH₂CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) El ensayo de Baeyer permite diferenciar un alqueno de un alcano.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Cada etapa de propagación necesita absorber luz para producirse.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) El ensayo de Beilstein da positivo tanto con el diclorometano como con el triclorometano.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) El alqueno decolora el Br₂/CCl₄ sin necesidad de exponer el tubo a la luz.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) Un estudiante expone benceno con Br₂/CCl₄ al sol y no observa decoloración. ¿Cómo lo explica? (1 punto)",
+       "options": [
+        "a) El benceno no tiene átomos de hidrógeno para sustituir",
+        "b) El Br₂ se evaporó",
+        "c) El benceno necesita un catalizador para reaccionar con el Br₂",
+        "d) El benceno es un alqueno"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Si se logra bromar el benceno, ¿el producto conserva el anillo aromático? ¿Qué subproducto gaseoso se forma? (0,5 + 0,5 puntos) — ¿Conserva el anillo aromático?"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Subproducto gaseoso"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "10": {
+  "A": {
+   "codigo": "C10-A",
+   "comision": 10,
+   "tema": 17,
+   "letra": "A",
+   "variantes": "P1v5-P2v6-P3v5-P4v3-P5v5",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: hexano, ciclohexeno, diclorometano o benceno. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "3º) Se expone el tubo al sol unos segundos: el líquido continúa rojo.",
+      "4º) Se agrega una pequeña cantidad de FeBr₃: el color rojo desaparece y se desprenden vapores ácidos (HBr)."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) hexano",
+        "b) ciclohexeno",
+        "c) diclorometano",
+        "d) benceno"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene 3-octeno y el otro triclorometano. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con 3-octeno"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con triclorometano"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata 2,3-dimetilbutano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 2-bromo-2,3-dimetilbutano",
+        "b) 1-bromo-2,3-dimetilbutano",
+        "c) 2,3-dibromo-2,3-dimetilbutano",
+        "d) 2,3-dimetil-2-buteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: (CH₃)₂C•–CH(CH₃)₂ + Br• → (CH₃)₂CBr–CH(CH₃)₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: (CH₃)₂C•–CH(CH₃)₂ + Br₂ → (CH₃)₂CBr–CH(CH₃)₂ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: (CH₃)₂CH–CH(CH₃)₂ + Br• → (CH₃)₂C•–CH(CH₃)₂ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) Dependiendo de la estructura del alcano, la bromación radicalaria puede dar más de un producto.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) El ensayo de Baeyer da positivo con alcanos porque se oxidan sus enlaces C–H.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) Un alqueno necesita luz para decolorar el Br₂/CCl₄.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) La llama verde azulada del ensayo de Beilstein se debe a la formación de un haluro de cobre volátil.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) En la bromación del benceno con FeBr₃, el electrófilo que ataca el anillo se genera a partir de: (1 punto)",
+       "options": [
+        "a) el Br₂ polarizado por el FeBr₃",
+        "b) el HBr",
+        "c) el CCl₄",
+        "d) el propio benceno"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) Si el benceno reacciona con Br₂ en presencia de FeBr₃, ¿se produce una adición o una sustitución? Nombre el producto orgánico. (0,5 + 0,5 puntos) — ¿Adición o sustitución?"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Producto orgánico"
+      }
+     ]
+    }
+   ]
+  },
+  "B": {
+   "codigo": "C10-B",
+   "comision": 10,
+   "tema": 18,
+   "letra": "B",
+   "variantes": "P1v2-P2v3-P3v2-P4v10-P5v2",
+   "sections": [
+    {
+     "n": 1,
+     "points": 2,
+     "intro": "Un tubo sin rótulo contiene un compuesto puro que puede ser uno de los siguientes: benceno, 2-penteno, triclorometano o heptano. Para identificarlo se realizaron, en este orden, los siguientes ensayos:",
+     "pasos": [
+      "1º) Test de Beilstein: la llama no cambia de color.",
+      "2º) Agregado de KMnO₄ diluido: la solución sigue violeta y no aparece precipitado.",
+      "3º) Agregado de Br₂/CCl₄ en oscuridad: el líquido continúa rojo.",
+      "4º) Se expone el tubo al sol unos segundos y se retira: el color rojo se va perdiendo paulatinamente."
+     ],
+     "post": "¿Cuál es el compuesto?",
+     "fields": [
+      {
+       "id": "p1",
+       "type": "radio",
+       "options": [
+        "a) benceno",
+        "b) 2-penteno",
+        "c) triclorometano",
+        "d) heptano"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "points": 2,
+     "intro": "Se tienen dos tubos sin rótulo: uno contiene 2-penteno y el otro benceno. Indique un ensayo que permita diferenciarlos y describa qué observaría en cada tubo.",
+     "fields": [
+      {
+       "id": "p2_ensayo",
+       "type": "text",
+       "label": "Ensayo"
+      },
+      {
+       "id": "p2_obsX",
+       "type": "text",
+       "label": "Observación en el tubo con 2-penteno"
+      },
+      {
+       "id": "p2_obsY",
+       "type": "text",
+       "label": "Observación en el tubo con benceno"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "points": 2,
+     "intro": "En el laboratorio se trata butano con Br₂/CCl₄ y se expone el tubo a la luz.",
+     "fields": [
+      {
+       "id": "p3a",
+       "type": "text",
+       "label": "a) ¿Cuántos productos monobromados distintos pueden formarse? (Considere solo isómeros constitucionales, no estereoisómeros) (0,5 puntos)"
+      },
+      {
+       "id": "p3b",
+       "type": "radio",
+       "label": "b) ¿Cuál será el producto mayoritario? (0,5 puntos)",
+       "options": [
+        "a) 2-bromobutano",
+        "b) 1-bromobutano",
+        "c) 2,3-dibromobutano",
+        "d) 1-buteno"
+       ]
+      },
+      {
+       "id": "p3c1",
+       "type": "radio",
+       "label": "c) Clasifique cada etapa como iniciación, propagación o terminación (0,25 puntos cada una). Etapa 1: Br₂ → 2 Br• (luz)",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c2",
+       "type": "radio",
+       "label": "Etapa 2: CH₃CH₂CH₂CH₃ + Br• → CH₃–C•H–CH₂CH₃ + HBr",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c3",
+       "type": "radio",
+       "label": "Etapa 3: Br• + Br• → Br₂",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      },
+      {
+       "id": "p3c4",
+       "type": "radio",
+       "label": "Etapa 4: CH₃–C•H–CH₂CH₃ + Br₂ → CH₃–CHBr–CH₂CH₃ + Br•",
+       "options": [
+        "Iniciación",
+        "Propagación",
+        "Terminación"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "points": 2,
+     "intro": "Indique si las siguientes afirmaciones son verdaderas o falsas. Cada respuesta correcta suma 0,5 punto; cada respuesta incorrecta o en blanco resta 0,5 punto. El puntaje mínimo del ejercicio es 0.",
+     "fields": [
+      {
+       "id": "p4a",
+       "type": "radio",
+       "label": "a) El producto de la adición de Br₂ a un alqueno conserva el doble enlace.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4b",
+       "type": "radio",
+       "label": "b) Un resultado positivo en el ensayo de Beilstein indica la presencia de cloro, bromo o yodo en la muestra.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4c",
+       "type": "radio",
+       "label": "c) La luz actúa en la etapa de terminación, uniendo los radicales entre sí.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      },
+      {
+       "id": "p4d",
+       "type": "radio",
+       "label": "d) El ensayo de Baeyer permite diferenciar un alcano de un hidrocarburo aromático.",
+       "options": [
+        "Verdadero",
+        "Falso"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "points": 2,
+     "intro": "Compuestos aromáticos.",
+     "fields": [
+      {
+       "id": "p5a",
+       "type": "radio",
+       "label": "a) La reacción característica del benceno es una: (1 punto)",
+       "options": [
+        "a) adición electrofílica",
+        "b) sustitución nucleofílica",
+        "c) sustitución electrofílica aromática",
+        "d) sustitución radicalaria"
+       ]
+      },
+      {
+       "id": "p5b1",
+       "type": "text",
+       "label": "b) ¿Qué debería agregarse al tubo para que el benceno reaccione con el Br₂/CCl₄? ¿Qué gas se desprende al ocurrir la reacción? (0,5 + 0,5 puntos) — Qué se agrega"
+      },
+      {
+       "id": "p5b2",
+       "type": "text",
+       "label": "Gas que se desprende"
+      }
+     ]
+    }
+   ]
+  }
  }
 };
 /* ============ CONFIGURACIÓN — cambiar acá ============ */
