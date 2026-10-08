@@ -3693,6 +3693,7 @@ function actualizarEspera(){
 function renderExamForm(){
   const exam = examActual();
   if (!exam) { app.appendChild(el("div", {class:"notice warn"}, ["No hay examen para esta comisión/tema."])); return; }
+  if (!STATE.preview) ctl();
   const back = el("button", {class:"backlink"}, [STATE.preview ? "← Volver al panel docente" : "← Volver al menú"]);
   back.onclick = () => {
     if (STATE.preview) { STATE.preview = false; STATE.comision = null; STATE.letra = null; STATE.view = "docente_panel"; render(); return; }
@@ -3747,6 +3748,7 @@ function collectAnswers(formEl, exam){
     if (f.type === "radio") { const c = formEl.querySelector('input[name="' + f.id + '"]:checked'); out[f.id] = c ? c.value : ""; }
     else { const i = formEl.querySelector('[data-id="' + f.id + '"]'); out[f.id] = i ? i.value : ""; }
   }));
+  Object.assign(out, ctlCampos());
   return out;
 }
 
@@ -3779,6 +3781,58 @@ function renderExamDone(){
   }
 }
 
+/* ============ CONTROL DE ACTIVIDAD (registro silencioso; es un indicio, no una prueba) ============ */
+// Umbrales editables. Dan el nivel de la columna SOSPECHA; los datos crudos van en las columnas ctl_*.
+const CTL_UMBRALES = {
+  alta:  { salidas_n: 4, salidas_seg: 120, salida_mayor_seg: 60, pegar: 1 },
+  media: { salidas_n: 2, salidas_seg: 20, copiar: 1, captura: 1, recargas_n: 2 }
+};
+function ctl(){ const a = STATE.answers; if (!a._ctl) a._ctl = {t0:Date.now(), n:0, seg:0, max:0, cp:0, pg:0, ps:0, rec:0, ev:[], hid:null, blur:null}; return a._ctl; }
+function ctlOn(){ return STATE.view === "exam_form" && !STATE.preview && !!(STATE.answers && STATE.answers._numero); }
+function ctlMs(t0, at){ const s = Math.max(0, Math.round((at - t0) / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+function ctlEv(c, txt, at){ if (c.ev.length < 40) c.ev.push(ctlMs(c.t0, at || Date.now()) + " " + txt); }
+function ctlSalida(c, ms, etiqueta){ const s = ms / 1000; c.n++; c.seg += s; if (s > c.max) c.max = s; ctlEv(c, etiqueta + " " + Math.round(s) + "s", Date.now() - ms); }
+function ctlSeFue(){ if (!ctlOn()) return; const c = ctl(); if (!c.hid) { c.hid = Date.now(); c.blur = null; saveDraft(); } }
+function ctlVolvio(){ if (!ctlOn()) return; const c = ctl(); c.blur = null; if (c.hid) { const ms = Date.now() - c.hid; c.hid = null; if (ms >= 1000) ctlSalida(c, ms, "oculta"); saveDraft(); } }
+function ctlRestaurar(){
+  const c = STATE.answers && STATE.answers._ctl; if (!c) return;
+  c.blur = null;
+  if (c.hid) { const ms = Date.now() - c.hid; c.hid = null; if (ms >= 5000) ctlSalida(c, ms, "oculta (la pagina se recargo)"); }
+  c.rec++; ctlEv(c, "recarga"); saveDraft();
+}
+document.addEventListener("visibilitychange", () => { if (document.hidden) ctlSeFue(); else ctlVolvio(); });
+window.addEventListener("pagehide", ctlSeFue);
+window.addEventListener("pageshow", ctlVolvio);
+window.addEventListener("blur", () => { if (!ctlOn() || document.hidden) return; const c = ctl(); if (!c.hid && !c.blur) c.blur = Date.now(); });
+window.addEventListener("focus", () => { if (!ctlOn()) return; const c = ctl(); if (c.blur && !c.hid) { const ms = Date.now() - c.blur; if (ms >= 2000) { ctlSalida(c, ms, "foco"); saveDraft(); } } c.blur = null; });
+["copy", "cut"].forEach(t => document.addEventListener(t, () => { if (!ctlOn()) return; const c = ctl(); c.cp++; ctlEv(c, t === "copy" ? "copiar" : "cortar"); saveDraft(); }));
+document.addEventListener("paste", () => { if (!ctlOn()) return; const c = ctl(); c.pg++; ctlEv(c, "pegar"); saveDraft(); });
+document.addEventListener("contextmenu", () => { if (ctlOn()) ctlEv(ctl(), "menu contextual"); });
+document.addEventListener("keyup", e => { if (ctlOn() && e.key === "PrintScreen") { const c = ctl(); c.ps++; ctlEv(c, "captura (PrintScreen)"); saveDraft(); } });
+document.addEventListener("keydown", e => { if (ctlOn() && e.metaKey && e.shiftKey && ["3", "4", "5", "s", "S"].indexOf(e.key) >= 0) { const c = ctl(); c.ps++; ctlEv(c, "captura (atajo)"); saveDraft(); } });
+
+function ctlEvaluar(c){
+  const U = CTL_UMBRALES, seg = Math.round(c.seg), max = Math.round(c.max), alta = [], media = [];
+  if (c.n >= U.alta.salidas_n) alta.push(c.n + " salidas");
+  if (seg >= U.alta.salidas_seg) alta.push(seg + " s fuera");
+  if (max >= U.alta.salida_mayor_seg) alta.push("salida de " + max + " s");
+  if (c.pg >= U.alta.pegar) alta.push("pego texto");
+  if (c.n >= U.media.salidas_n) media.push(c.n + " salidas");
+  if (seg >= U.media.salidas_seg) media.push(seg + " s fuera");
+  if (c.cp >= U.media.copiar) media.push("copio/corto texto");
+  if (c.ps >= U.media.captura) media.push("tecla de captura");
+  if (c.rec >= U.media.recargas_n) media.push(c.rec + " recargas");
+  const motivos = alta.concat(media.filter(x => alta.indexOf(x) < 0));
+  return { nivel: alta.length ? "MIRAR - ALTA" : (media.length ? "MIRAR" : "NO"), motivos: motivos };
+}
+function ctlCampos(){
+  const c = STATE.answers && STATE.answers._ctl;
+  if (!c) return { SOSPECHA: "SIN DATOS" };
+  const r = ctlEvaluar(c);
+  return { SOSPECHA: r.nivel, ctl_motivos: r.motivos.join("; "), ctl_salidas_n: c.n, ctl_salidas_seg: Math.round(c.seg), ctl_salida_mayor_seg: Math.round(c.max),
+    ctl_copypaste_n: c.cp + c.pg, ctl_printscreen_n: c.ps, ctl_recargas_n: c.rec, ctl_tiempo_total_seg: Math.round((Date.now() - c.t0) / 1000), ctl_eventos: c.ev.join(" | ").slice(0, 500) };
+}
+
 /* ============ BORRADOR LOCAL ============ */
 const DRAFT_KEY = "pruebita_tp5_draft_v1";
 function saveDraft(){ if (STATE.preview) return; try { localStorage.setItem(DRAFT_KEY, JSON.stringify({comision:STATE.comision, letra:STATE.letra, answers:STATE.answers, ts:Date.now()})); } catch(e){} }
@@ -3790,7 +3844,7 @@ async function init(){
   const d = loadDraft();
   if (d && d.comision && EXAMS_TP5[d.comision] && d.answers && d.answers._numero) {
     STATE.comision = d.comision; STATE.answers = d.answers; STATE.restored = true;
-    if (d.letra && EXAMS_TP5[d.comision][d.letra]) { STATE.letra = d.letra; STATE.view = "exam_form"; render(); return; }
+    if (d.letra && EXAMS_TP5[d.comision][d.letra]) { STATE.letra = d.letra; STATE.view = "exam_form"; ctlRestaurar(); render(); return; }
     STATE.view = "esperando"; render(); registrarYSeguir(); return;
   }
   render();
