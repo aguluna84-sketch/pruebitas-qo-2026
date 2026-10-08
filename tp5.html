@@ -3586,7 +3586,7 @@ function renderDocentePanel(){
     };
     card.appendChild(el("div", {class:"toggle-row"}, [
       el("div", {}, ["Comisión " + id]),
-      el("div", {style:"display:flex;align-items:center;gap:8px;flex-wrap:wrap;"}, [mkPrev("A"), mkPrev("B"), forzar, el("label", {class:"switch"}, [sw, el("span", {class:"slider"})])])
+      el("div", {style:"display:flex;align-items:center;gap:8px;flex-wrap:wrap;"}, [mkPrev("A"), mkPrev("B"), (() => { const rv = el("button", {class:"ghost", style:"padding:6px 10px;font-size:0.82rem;"}, ["Revisión"]); rv.onclick = () => window.open("revision.html?com=" + id, "_blank"); return rv; })(), forzar, el("label", {class:"switch"}, [sw, el("span", {class:"slider"})])])
     ]));
   });
   app.appendChild(card);
